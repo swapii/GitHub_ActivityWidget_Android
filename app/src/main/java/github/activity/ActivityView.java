@@ -1,12 +1,14 @@
 package github.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.widget.GridLayout;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
@@ -164,4 +166,7 @@ public class ActivityView extends GridLayout {
 
 	}
 
+	public void update(Intent intent) {
+		Toast.makeText(getContext(), "WOW!", Toast.LENGTH_LONG).show();
+	}
 }
