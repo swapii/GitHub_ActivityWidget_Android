@@ -111,36 +111,14 @@ public class ActivityView extends GridLayout {
 			}
 		}
 
-		int minColor = Color.parseColor("#30FFFFFF");
-		int maxColor = Color.parseColor("#FFFFFFFF");
+		ColorContainer minColor = new ColorContainer(Color.parseColor("#30FFFFFF"));
+		ColorContainer maxColor = new ColorContainer(Color.parseColor("#FFFFFFFF"));
 
-		float[] minHsv = new float[3];
-		float[] maxHsv = new float[3];
-
-		int minAlpha = Color.alpha(minColor);
-		int maxAlpha = Color.alpha(maxColor);
-
-		Color.colorToHSV(minColor, minHsv);
-		Color.colorToHSV(maxColor, maxHsv);
-
-		int maxActivity = 0;
-		for (DayActivity activity : userActivity) {
-			maxActivity = Math.max(maxActivity, activity.getActivityCount());
-		}
+		int maxActivity = ActivityColorUtil.getMaxActivity(userActivity);
 
 		for (DayActivity activity : userActivity) {
 
-			float coeff = (float) activity.getActivityCount() / maxActivity;
-
-			int a = (int) (minAlpha + (maxAlpha - minAlpha) * coeff);
-			float h = minHsv[0] + (maxHsv[0] - minHsv[0]) * coeff;
-			float s = minHsv[1] + (maxHsv[1] - minHsv[1]) * coeff;
-			float v = minHsv[2] + (maxHsv[2] - minHsv[2]) * coeff;
-
-			float[] colorHsv = new float[]{h, s, v};
-
-			int color = Color.HSVToColor(colorHsv);
-			color = Color.argb(a, Color.red(color), Color.green(color), Color.blue(color));
+			int color = ActivityColorUtil.calculateColor(minColor, maxColor, maxActivity, activity);
 
 			LayoutParams params = new LayoutParams(GridLayout.spec(row), GridLayout.spec(column));
 			params.width = cellSize;
@@ -169,4 +147,5 @@ public class ActivityView extends GridLayout {
 	public void update(Intent intent) {
 		Toast.makeText(getContext(), "WOW!", Toast.LENGTH_LONG).show();
 	}
+
 }

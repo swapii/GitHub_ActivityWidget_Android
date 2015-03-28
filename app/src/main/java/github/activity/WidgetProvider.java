@@ -15,6 +15,13 @@ import android.widget.RemoteViews;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import github.activity.client.DayActivity;
+import github.activity.client.GitHubClient;
+
 /**
  * Created by asavinova on 26/12/14.
  */
@@ -25,6 +32,7 @@ public class WidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		for (int widgetId : appWidgetIds) {
+			L.trace("Update widget {}", widgetId);
 			Bundle options = appWidgetManager.getAppWidgetOptions(widgetId);
 			updateWidget(context, appWidgetManager, widgetId, options);
 		}
@@ -32,10 +40,20 @@ public class WidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+		L.trace("Widget {} options changed", appWidgetId);
 		updateWidget(context, appWidgetManager, appWidgetId, newOptions);
 	}
 
 	private void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle options) {
+
+		List<DayActivity> userActivity = new ArrayList<>();
+		for (int i = 0; i < 371; i++) {
+			DayActivity activity = new DayActivity();
+			activity.setDate(new Date());
+			activity.setActivityCount((int) (Math.random() * 10));
+			userActivity.add(activity);
+		}
+
 
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		float density = metrics.density;
@@ -57,31 +75,19 @@ public class WidgetProvider extends AppWidgetProvider {
 		}
 
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
-		remoteViews.setImageViewBitmap(R.id.image, createBitmap(width, height));
+		remoteViews.setImageViewBitmap(R.id.image, createBitmap(width, height, userActivity));
 		appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 	}
 
-	private Bitmap createBitmap(int width, int height) {
+	private Bitmap createBitmap(int width, int height, List<DayActivity> userActivity) {
 
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 
-		Paint borderPaint = new Paint();
-		borderPaint.setColor(Color.MAGENTA);
-		borderPaint.setStrokeWidth(8);
-		borderPaint.setStyle(Paint.Style.STROKE);
-		canvas.drawRect(0, 0, width, height, borderPaint);
+		ColorContainer minColor = new ColorContainer(Color.parseColor("#30FFFFFF"));
+		ColorContainer maxColor = new ColorContainer(Color.parseColor("#FFFFFFFF"));
 
-		int[] colors = {
-				Color.parseColor("#ff0000"),
-				Color.parseColor("#ff9500"),
-				Color.parseColor("#fffb00"),
-				Color.parseColor("#00f900"),
-				Color.parseColor("#00fdff"),
-				Color.parseColor("#0433ff"),
-				Color.parseColor("#942192")
-		};
-
+		int maxActivity = ActivityColorUtil.getMaxActivity(userActivity);
 
 		double cellHeightRaw = (double) height / 7;
 		int columnsCountRaw = (int) ((double) width / cellHeightRaw);
@@ -89,13 +95,9 @@ public class WidgetProvider extends AppWidgetProvider {
 		double cellWidthRaw = (double) width / columnsCountRaw;
 		double cellSizeRaw = Math.min(cellWidthRaw, cellHeightRaw);
 
-		L.trace("{} {} {} {}", cellHeightRaw, cellWidthRaw, columnsCountRaw, cellSizeRaw);
-
 		double squareVisibleSizeRaw = cellSizeRaw * 16 / (16 + 2);
-		L.trace("Square size raw " + squareVisibleSizeRaw);
 
 		int squareVisibleSize = ((int) (squareVisibleSizeRaw / 4)) * 4;
-		L.trace("Square size 4 = " + squareVisibleSize);
 
 		double divisionResult = cellSizeRaw / 18;
 		int squarePadding = divisionResult < 1 ? 1 : (int) divisionResult;
@@ -111,7 +113,7 @@ public class WidgetProvider extends AppWidgetProvider {
 		int offsetX = (width - columnsCount * cellSize) / 2;
 		int offsetY = (height - rowsCount * cellSize) / 2;
 
-		for (int i = 0; i < 366; i++) {
+		for (DayActivity activity : userActivity) {
 
 			int left = offsetX + cellSize * column + squarePadding;
 			int right = left + squareVisibleSize;
@@ -119,8 +121,11 @@ public class WidgetProvider extends AppWidgetProvider {
 			int top = offsetY + cellSize * row + squarePadding;
 			int bottom = top + squareVisibleSize;
 
+
+			int color = ActivityColorUtil.calculateColor(minColor, maxColor, maxActivity, activity);
+
 			Paint paint = new Paint();
-			paint.setColor(colors[i % 7]);
+			paint.setColor(color);
 			canvas.drawRect(left, top, right, bottom, paint);
 
 			row--;
