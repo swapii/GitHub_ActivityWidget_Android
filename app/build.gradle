@@ -34,6 +34,8 @@ apt {
 
 dependencies {
 
+	compile project(':dao')
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
 	apt "org.androidannotations:androidannotations:3.1"
