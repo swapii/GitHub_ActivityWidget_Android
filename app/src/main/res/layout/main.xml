@@ -6,9 +6,4 @@
     tools:context="github.activity.MainActivity"
 	android:background="@android:color/black">
 
-    <github.activity.ActivityView_
-		android:id="@+id/activity_view"
-		android:layout_width="match_parent"
-		android:layout_height="100dp" />
-
 </RelativeLayout>

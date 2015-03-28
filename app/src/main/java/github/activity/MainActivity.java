@@ -18,8 +18,6 @@ public class MainActivity extends ActionBarActivity {
 
     private static final Logger L = LoggerFactory.getLogger(MainActivity.class);
 
-	@ViewById ActivityView activityView;
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -37,7 +35,6 @@ public class MainActivity extends ActionBarActivity {
 
 	@UiThread
 	protected void updateActivityView(List<DayActivity> userActivity) {
-		activityView.update(userActivity);
 	}
 
 }
