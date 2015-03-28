@@ -1,0 +1,10 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'github.activity.dao.generator.Generator'
+
+dependencies {
+
+	compile 'de.greenrobot:greendao-generator:1.3.1'
+
+}
