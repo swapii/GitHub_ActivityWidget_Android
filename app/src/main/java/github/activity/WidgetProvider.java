@@ -10,17 +10,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import github.activity.client.DayActivity;
-import github.activity.client.GitHubClient;
+import github.activity.dao.DayActivity;
 
 /**
  * Created by asavinova on 26/12/14.
@@ -46,14 +44,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
 	private void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle options) {
 
-		List<DayActivity> userActivity = new ArrayList<>();
-		for (int i = 0; i < 371; i++) {
-			DayActivity activity = new DayActivity();
-			activity.setDate(new Date());
-			activity.setActivityCount((int) (Math.random() * 10));
-			userActivity.add(activity);
-		}
-
+		List<DayActivity> activityList = Dao_.getInstance_(context).getUserActivity("swapii");
 
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		float density = metrics.density;
@@ -74,8 +65,11 @@ public class WidgetProvider extends AppWidgetProvider {
 			height = providerInfo.minHeight;
 		}
 
+		Bitmap bitmap = createBitmap(width, height, activityList);
+
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
-		remoteViews.setImageViewBitmap(R.id.image, createBitmap(width, height, userActivity));
+		remoteViews.setImageViewBitmap(R.id.image, bitmap);
+		remoteViews.setViewVisibility(R.id.loading_view, View.GONE);
 		appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 	}
 

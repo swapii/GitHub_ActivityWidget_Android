@@ -4,13 +4,12 @@ import android.support.v7.app.ActionBarActivity;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import github.activity.client.DayActivity;
+import github.activity.client.DayActivityFromServer;
 import github.activity.client.GitHubClient;
 
 @EActivity(R.layout.main)
@@ -27,14 +26,14 @@ public class MainActivity extends ActionBarActivity {
 			public void run() {
 				L.error("Start thread");
 				GitHubClient gitHubClient = new GitHubClient();
-				List<DayActivity> userActivity = gitHubClient.getUserActivity("swapii");
+				List<DayActivityFromServer> userActivity = gitHubClient.getUserActivity("swapii");
 				updateActivityView(userActivity);
 			}
 		}).start();
 	}
 
 	@UiThread
-	protected void updateActivityView(List<DayActivity> userActivity) {
+	protected void updateActivityView(List<DayActivityFromServer> userActivity) {
 	}
 
 }

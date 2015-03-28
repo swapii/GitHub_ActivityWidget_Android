@@ -24,7 +24,7 @@ public class GitHubClient {
     private static final Pattern CELL_PATTERN = Pattern.compile("<rect class=\"day\" width=\"11\" height=\"11\" y=\"\\d+?\" fill=\".+?\" data-count=\"(\\d+?)\" data-date=\"(\\d{4}-\\d{2}-\\d{2})\"/>", Pattern.DOTALL);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    public List<DayActivity> getUserActivity(String username) {
+    public List<DayActivityFromServer> getUserActivity(String username) {
 
         try {
             URLConnection connection = new URL("https://github.com/" + username).openConnection();
@@ -43,13 +43,13 @@ public class GitHubClient {
             String resultStream = builder.toString();
             Matcher matcher = CELL_PATTERN.matcher(resultStream);
 
-            List<DayActivity> list = new ArrayList<>();
+            List<DayActivityFromServer> list = new ArrayList<>();
             while (matcher.find()) {
 
                 int count = Integer.parseInt(matcher.group(1));
                 Date date = DATE_FORMAT.parse(matcher.group(2));
 
-                DayActivity activity = new DayActivity();
+                DayActivityFromServer activity = new DayActivityFromServer();
                 activity.setDate(date);
                 activity.setActivityCount(count);
                 list.add(activity);

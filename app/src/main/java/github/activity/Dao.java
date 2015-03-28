@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import github.activity.client.DayActivity;
+import de.greenrobot.dao.query.QueryBuilder;
+import github.activity.client.DayActivityFromServer;
 import github.activity.dao.DaoMaster;
 import github.activity.dao.DaoSession;
+import github.activity.dao.DayActivity;
 import github.activity.dao.DayActivityDao;
 
 /**
@@ -31,7 +33,8 @@ public class Dao {
 		session = master.newSession();
 	}
 
-	public void updateUserActivity(final String username, final List<DayActivity> userActivity) {
+	public void updateUserActivity(final String username, final List<DayActivityFromServer> userActivity) {
+		//TODO Pass into method DayActivity for DB
 		session.runInTx(new Runnable() {
 			@Override
 			public void run() {
@@ -39,20 +42,28 @@ public class Dao {
 				DayActivityDao dao = session.getDayActivityDao();
 				L.trace("Activities count before update: " + dao.count());
 
-				dao.queryBuilder()
-						.where(DayActivityDao.Properties.User.eq(username))
+				getBuilderForActivityBeUser(username)
 						.buildDelete()
 						.executeDeleteWithoutDetachingEntities();
 				L.trace("Activities count after clean: " + dao.count());
 
-				for (DayActivity serverActivity : userActivity) {
-					github.activity.dao.DayActivity dbActivity = new github.activity.dao.DayActivity(username, serverActivity.getDate(), serverActivity.getActivityCount());
+				for (DayActivityFromServer serverActivity : userActivity) {
+					DayActivity dbActivity = new DayActivity(username, serverActivity.getDate(), serverActivity.getActivityCount());
 					dao.insert(dbActivity);
 				}
 				L.trace("Activities count after insert new: " + dao.count());
 
 			}
 		});
+	}
+
+	public List<DayActivity> getUserActivity(String username) {
+		return getBuilderForActivityBeUser(username).build().list();
+	}
+
+	private QueryBuilder<DayActivity> getBuilderForActivityBeUser(String username) {
+		return session.getDayActivityDao().queryBuilder()
+				.where(DayActivityDao.Properties.User.eq(username));
 	}
 
 }

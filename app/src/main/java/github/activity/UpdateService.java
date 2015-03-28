@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import github.activity.client.DayActivity;
+import github.activity.client.DayActivityFromServer;
 import github.activity.client.GitHubClient;
 
 /**
@@ -62,7 +62,7 @@ public class UpdateService extends Service {
 
 			GitHubClient client = new GitHubClient();
 			String username = "swapii";
-			List<DayActivity> userActivity = client.getUserActivity(username);
+			List<DayActivityFromServer> userActivity = client.getUserActivity(username);
 			dao.updateUserActivity(username, userActivity);
 
 		} finally {

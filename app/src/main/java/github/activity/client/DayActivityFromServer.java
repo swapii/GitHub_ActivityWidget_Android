@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by swap_i on 21/12/14.
  */
-public class DayActivity {
+public class DayActivityFromServer {
 
     private Date date;
     private int activityCount;
