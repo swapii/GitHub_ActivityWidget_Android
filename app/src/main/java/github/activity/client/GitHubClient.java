@@ -32,12 +32,15 @@ public class GitHubClient {
             connection.connect();
 
             StringBuilder builder = new StringBuilder();
-            try (InputStreamReader reader = new InputStreamReader(connection.getInputStream())) {
+            InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+            try {
                 int readed;
                 char[] buffer = new char[1024];
                 while ((readed = reader.read(buffer)) != -1) {
                     builder.append(buffer, 0, readed);
                 }
+            } finally {
+                reader.close();
             }
 
             String resultStream = builder.toString();
