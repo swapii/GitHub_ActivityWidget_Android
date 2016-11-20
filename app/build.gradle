@@ -10,7 +10,7 @@ android {
         applicationId 'github.activity'
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
+        versionCode project.versionCode as int
         versionName '1.0.0'
     }
 
@@ -18,6 +18,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def name = output.outputFile.name
+                    .replace('app-', 'GithubActivityWidget-')
+                    .replace('.apk', "-${variant.versionName}-b${variant.versionCode}.apk")
+                    .replace('-release', '')
+            output.outputFile = new File(output.outputFile.parent, name)
         }
     }
 
