@@ -2,6 +2,9 @@ package github.activity;
 
 import android.support.v7.app.ActionBarActivity;
 
+import com.github.DayActivityFromServer;
+import com.github.GitHubClient;
+
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.slf4j.Logger;
@@ -9,8 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import github.activity.client.DayActivityFromServer;
-import github.activity.client.GitHubClient;
 
 @EActivity(R.layout.main)
 public class MainActivity extends ActionBarActivity {
@@ -25,9 +26,13 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void run() {
 				L.error("Start thread");
-				GitHubClient gitHubClient = new GitHubClient();
-				List<DayActivityFromServer> userActivity = gitHubClient.getUserActivity("swapii");
-				updateActivityView(userActivity);
+				GitHubClient client = new GitHubClient();
+				try {
+					List<DayActivityFromServer> userActivity = client.getUserActivity("swapii");
+					updateActivityView(userActivity);
+				} catch (GitHubClient.PageParseException e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
 	}

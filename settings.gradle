@@ -1,1 +1,4 @@
-include ':app', ':dao', ':dao:generator'
+include ':app'
+include ':dao'
+include ':dao:generator'
+include ':github'

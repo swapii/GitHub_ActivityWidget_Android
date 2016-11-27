@@ -48,6 +48,7 @@ apt {
 dependencies {
 
 	compile project(':dao')
+	compile project(':github')
 
 	apt 'org.androidannotations:androidannotations:3.1'
 	compile 'org.androidannotations:androidannotations-api:3.1'

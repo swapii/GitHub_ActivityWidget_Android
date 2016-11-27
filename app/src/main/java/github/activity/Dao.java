@@ -3,6 +3,8 @@ package github.activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.github.DayActivityFromServer;
+
 import org.androidannotations.annotations.EBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
-import github.activity.client.DayActivityFromServer;
 import github.activity.dao.DaoMaster;
 import github.activity.dao.DaoSession;
 import github.activity.dao.DayActivity;

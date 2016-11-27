@@ -1,4 +1,4 @@
-package github.activity.client;
+package com.github;
 
 import java.util.Date;
 

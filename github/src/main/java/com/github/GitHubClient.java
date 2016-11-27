@@ -1,4 +1,4 @@
-package github.activity.client;
+package com.github;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +21,10 @@ import java.util.regex.Pattern;
 public class GitHubClient {
 
     private static final Logger L = LoggerFactory.getLogger(GitHubClient.class);
-    private static final Pattern CELL_PATTERN = Pattern.compile("<rect class=\"day\" width=\"11\" height=\"11\" y=\"\\d+?\" fill=\".+?\" data-count=\"(\\d+?)\" data-date=\"(\\d{4}-\\d{2}-\\d{2})\"/>", Pattern.DOTALL);
+    private static final Pattern CELL_PATTERN = Pattern.compile("<rect class=\"day\" .+? data-count=\"(\\d+?)\" data-date=\"(\\d{4}-\\d{2}-\\d{2})\"/>", Pattern.DOTALL);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    public List<DayActivityFromServer> getUserActivity(String username) {
+    public List<DayActivityFromServer> getUserActivity(String username) throws PageParseException {
 
         try {
             URLConnection connection = new URL("https://github.com/" + username).openConnection();
@@ -58,6 +58,10 @@ public class GitHubClient {
                 list.add(activity);
             }
 
+			if (list.isEmpty()) {
+				throw new PageParseException("Can't find any activity on page");
+			}
+
             return list;
 
         } catch (IOException e) {
@@ -69,5 +73,13 @@ public class GitHubClient {
 
         return new ArrayList<>();
     }
+
+	public class PageParseException extends Exception {
+
+		public PageParseException(String s) {
+			super(s);
+		}
+
+	}
 
 }

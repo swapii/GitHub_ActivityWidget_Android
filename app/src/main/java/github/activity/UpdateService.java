@@ -6,6 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
 
+import com.github.DayActivityFromServer;
+import com.github.GitHubClient;
+
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
@@ -14,9 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
-import github.activity.client.DayActivityFromServer;
-import github.activity.client.GitHubClient;
 
 /**
  * Created by asavinova on 28/03/15.
@@ -65,6 +65,8 @@ public class UpdateService extends Service {
 			List<DayActivityFromServer> userActivity = client.getUserActivity(username);
 			dao.updateUserActivity(username, userActivity);
 
+		} catch (GitHubClient.PageParseException e) {
+			e.printStackTrace();
 		} finally {
 			stopSelf();
 		}
