@@ -1,4 +1,4 @@
-package github.activity;
+package github.activity.ui;
 
 import android.graphics.Color;
 
@@ -10,7 +10,8 @@ import github.activity.dao.DayActivity;
  * Created by pavel on 28/03/15.
  */
 public class ActivityColorUtil {
-	static int calculateColor(ColorContainer minColor, ColorContainer maxColor, int maxActivity, DayActivity activity) {
+
+	public static int calculateColor(ActivityColor minColor, ActivityColor maxColor, int maxActivity, DayActivity activity) {
 
 		float coeff = (float) activity.getCount() / maxActivity;
 
@@ -24,11 +25,12 @@ public class ActivityColorUtil {
 		return color;
 	}
 
-	static int getMaxActivity(List<DayActivity> userActivity) {
+	public static int findMaxActivity(List<DayActivity> userActivity) {
 		int maxActivity = 0;
 		for (DayActivity activity : userActivity) {
 			maxActivity = Math.max(maxActivity, activity.getCount());
 		}
 		return maxActivity;
 	}
+
 }

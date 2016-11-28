@@ -3,7 +3,6 @@ package github.activity;
 import android.app.Service;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.IBinder;
 
 import com.github.DayActivityFromServer;
@@ -28,7 +27,7 @@ public class UpdateService extends Service {
 
 	private boolean isStarted;
 
-	@Bean Dao dao;
+	@Bean Storage storage;
 	@SystemService ConnectivityManager connectivityManager;
 
 	@Override
@@ -52,25 +51,15 @@ public class UpdateService extends Service {
 
 	@Background
 	void updateData() {
-
 		try {
-
-			NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-			if (networkInfo == null || networkInfo.getType() != ConnectivityManager.TYPE_WIFI) {
-				return;
-			}
-
 			GitHubClient client = new GitHubClient();
-			String username = "swapii";
-			List<DayActivityFromServer> userActivity = client.getUserActivity(username);
-			dao.updateUserActivity(username, userActivity);
-
+			List<DayActivityFromServer> userActivity = client.getUserActivity("swapii");
+			storage.updateUserActivity("swapii", userActivity);
 		} catch (GitHubClient.PageParseException e) {
 			e.printStackTrace();
 		} finally {
 			stopSelf();
 		}
-
 	}
 
 }

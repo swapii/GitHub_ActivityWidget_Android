@@ -21,13 +21,13 @@ import github.activity.dao.DayActivityDao;
  * Created by asavinova on 28/03/15.
  */
 @EBean(scope = EBean.Scope.Singleton)
-public class Dao {
+public class Storage {
 
-	private static final Logger L = LoggerFactory.getLogger(Dao.class);
+	private static final Logger L = LoggerFactory.getLogger(Storage.class);
 
 	private DaoSession session;
 
-	protected Dao(Context context) {
+	protected Storage(Context context) {
 		DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "main", null);
 		SQLiteDatabase db = helper.getWritableDatabase();
 		DaoMaster master = new DaoMaster(db);
@@ -43,7 +43,7 @@ public class Dao {
 				DayActivityDao dao = session.getDayActivityDao();
 				L.trace("Activities count before update: " + dao.count());
 
-				getBuilderForActivityBeUser(username)
+				getBuilderForActivityByUser(username)
 						.buildDelete()
 						.executeDeleteWithoutDetachingEntities();
 				L.trace("Activities count after clean: " + dao.count());
@@ -59,10 +59,10 @@ public class Dao {
 	}
 
 	public List<DayActivity> getUserActivity(String username) {
-		return getBuilderForActivityBeUser(username).build().list();
+		return getBuilderForActivityByUser(username).build().list();
 	}
 
-	private QueryBuilder<DayActivity> getBuilderForActivityBeUser(String username) {
+	private QueryBuilder<DayActivity> getBuilderForActivityByUser(String username) {
 		return session.getDayActivityDao().queryBuilder()
 				.where(DayActivityDao.Properties.User.eq(username));
 	}

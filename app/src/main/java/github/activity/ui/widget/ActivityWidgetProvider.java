@@ -1,4 +1,4 @@
-package github.activity;
+package github.activity.ui.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -18,21 +18,24 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import github.activity.R;
+import github.activity.Storage_;
 import github.activity.dao.DayActivity;
+import github.activity.ui.ActivityColorUtil;
+import github.activity.ui.ActivityColor;
 
 /**
  * Created by asavinova on 26/12/14.
  */
-public class WidgetProvider extends AppWidgetProvider {
+public class ActivityWidgetProvider extends AppWidgetProvider {
 
-	private static final Logger L = LoggerFactory.getLogger(WidgetProvider.class);
+	private static final Logger L = LoggerFactory.getLogger(ActivityWidgetProvider.class);
 
 	@Override
-	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+	public void onUpdate(Context context, AppWidgetManager widgetManager, int[] appWidgetIds) {
 		for (int widgetId : appWidgetIds) {
-			L.trace("Update widget {}", widgetId);
-			Bundle options = appWidgetManager.getAppWidgetOptions(widgetId);
-			updateWidget(context, appWidgetManager, widgetId, options);
+			Bundle options = widgetManager.getAppWidgetOptions(widgetId);
+			updateWidget(context, widgetManager, widgetId, options);
 		}
 	}
 
@@ -42,14 +45,16 @@ public class WidgetProvider extends AppWidgetProvider {
 		updateWidget(context, appWidgetManager, appWidgetId, newOptions);
 	}
 
-	private void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle options) {
+	private void updateWidget(Context context, AppWidgetManager appWidgetManager, int widgetId, Bundle options) {
 
-		List<DayActivity> activityList = Dao_.getInstance_(context).getUserActivity("swapii");
+		L.trace("Update widget {}", widgetId);
+
+		List<DayActivity> activityList = Storage_.getInstance_(context).getUserActivity("swapii");
 
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		float density = metrics.density;
 
-		AppWidgetProviderInfo providerInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+		AppWidgetProviderInfo providerInfo = appWidgetManager.getAppWidgetInfo(widgetId);
 
 		int maxWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
 
@@ -70,7 +75,7 @@ public class WidgetProvider extends AppWidgetProvider {
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 		remoteViews.setImageViewBitmap(R.id.image, bitmap);
 		remoteViews.setViewVisibility(R.id.loading_view, View.GONE);
-		appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+		appWidgetManager.updateAppWidget(widgetId, remoteViews);
 	}
 
 	private Bitmap createBitmap(int width, int height, List<DayActivity> userActivity) {
@@ -78,10 +83,10 @@ public class WidgetProvider extends AppWidgetProvider {
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 
-		ColorContainer minColor = new ColorContainer(Color.parseColor("#30FFFFFF"));
-		ColorContainer maxColor = new ColorContainer(Color.parseColor("#FFFFFFFF"));
+		ActivityColor minColor = new ActivityColor(Color.parseColor("#30FFFFFF"));
+		ActivityColor maxColor = new ActivityColor(Color.parseColor("#FFFFFFFF"));
 
-		int maxActivity = ActivityColorUtil.getMaxActivity(userActivity);
+		int maxActivity = ActivityColorUtil.findMaxActivity(userActivity);
 
 		double cellHeightRaw = (double) height / 7;
 		int columnsCountRaw = (int) ((double) width / cellHeightRaw);

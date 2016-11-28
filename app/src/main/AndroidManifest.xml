@@ -12,20 +12,11 @@
 		android:label="@string/app_name"
 		android:theme="@style/AppTheme">
 
-		<activity
-			android:name=".MainActivity_"
-			android:label="@string/title_activity_main">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-
 		<service
 			android:name=".UpdateService_"
 			android:exported="false" />
 
-		<receiver android:name=".WidgetProvider">
+		<receiver android:name=".ui.widget.ActivityWidgetProvider">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
@@ -41,6 +32,15 @@
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
+
+		<activity
+			android:name=".ui.MainActivity_"
+			android:label="@string/main_title">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
 
 	</application>
 

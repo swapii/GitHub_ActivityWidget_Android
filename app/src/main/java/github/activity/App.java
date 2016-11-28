@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 public class App extends Application {
 
 	private static final Logger L = LoggerFactory.getLogger(App.class);
+
 	public static final int DATA_UPDATE_INTERVAL = 1000 * 60 * 60;
 
 	@SystemService AlarmManager alarmManager;
@@ -25,14 +26,20 @@ public class App extends Application {
 	public void onCreate() {
 		super.onCreate();
 		L.trace("App create");
+		tuneAlarm();
+	}
 
-		Intent intent = new Intent(this, UpdateService_.class);
-		PendingIntent alarmIntent = PendingIntent.getService(this, 0, intent, 0);
+	private void tuneAlarm() {
 
-		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+		Intent serviceIntent = new Intent(this, UpdateService_.class);
+		PendingIntent alarmIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
+
+		alarmManager.setInexactRepeating(
+				AlarmManager.ELAPSED_REALTIME,
 				DATA_UPDATE_INTERVAL,
-				DATA_UPDATE_INTERVAL, alarmIntent);
-
+				DATA_UPDATE_INTERVAL,
+				alarmIntent
+		);
 	}
 
 }
