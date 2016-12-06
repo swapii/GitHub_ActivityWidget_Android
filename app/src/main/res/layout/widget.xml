@@ -5,49 +5,178 @@
 	android:padding="4dp">
 
 	<LinearLayout
-		android:orientation="horizontal"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:orientation="horizontal">
+		
+		<LinearLayout
+			style="@style/Widget_Week"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/cell_04_6"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_04_5"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_04_4"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_04_3"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_04_2"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_04_1"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_04_0"
+				style="@style/Widget_Cell" />
+
+		</LinearLayout>
+		
+		<LinearLayout
+			style="@style/Widget_Week"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/cell_03_6"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_03_5"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_03_4"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_03_3"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_03_2"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_03_1"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_03_0"
+				style="@style/Widget_Cell" />
+
+		</LinearLayout>
 
 		<LinearLayout
-			android:orientation="vertical"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content">
+			style="@style/Widget_Week"
+			android:orientation="vertical">
 
 			<TextView
-				android:id="@+id/cell_0_0"
-				android:layout_width="8dp"
-				android:layout_height="8dp" />
+				android:id="@+id/cell_02_6"
+				style="@style/Widget_Cell" />
 
 			<TextView
-				android:id="@+id/cell_0_1"
-				android:layout_width="8dp"
-				android:layout_height="8dp" />
+				android:id="@+id/cell_02_5"
+				style="@style/Widget_Cell" />
 
 			<TextView
-				android:id="@+id/cell_0_2"
-				android:layout_width="8dp"
-				android:layout_height="8dp" />
+				android:id="@+id/cell_02_4"
+				style="@style/Widget_Cell" />
 
 			<TextView
-				android:id="@+id/cell_0_3"
-				android:layout_width="8dp"
-				android:layout_height="8dp" />
+				android:id="@+id/cell_02_3"
+				style="@style/Widget_Cell" />
 
 			<TextView
-				android:id="@+id/cell_0_4"
-				android:layout_width="8dp"
-				android:layout_height="8dp" />
+				android:id="@+id/cell_02_2"
+				style="@style/Widget_Cell" />
 
 			<TextView
-				android:id="@+id/cell_0_5"
-				android:layout_width="8dp"
-				android:layout_height="8dp" />
+				android:id="@+id/cell_02_1"
+				style="@style/Widget_Cell" />
 
 			<TextView
-				android:id="@+id/cell_0_6"
-				android:layout_width="8dp"
-				android:layout_height="8dp" />
+				android:id="@+id/cell_02_0"
+				style="@style/Widget_Cell" />
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/Widget_Week"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/cell_01_6"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_01_5"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_01_4"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_01_3"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_01_2"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_01_1"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_01_0"
+				style="@style/Widget_Cell" />
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/Widget_Week"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/cell_00_6"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_00_5"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_00_4"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_00_3"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_00_2"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_00_1"
+				style="@style/Widget_Cell" />
+
+			<TextView
+				android:id="@+id/cell_00_0"
+				style="@style/Widget_Cell" />
 
 		</LinearLayout>
 

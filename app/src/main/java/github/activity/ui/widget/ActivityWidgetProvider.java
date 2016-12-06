@@ -10,6 +10,9 @@ import android.widget.RemoteViews;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import github.activity.R;
@@ -28,10 +31,21 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 
 		AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
 
-		List<DayActivity> userActivity = Storage_.getInstance_(context).getUserActivity("swapii");
+		String username = "swapii";
+		List<DayActivity> userActivity = Storage_.getInstance_(context).getUserActivity(username);
 
 		if (userActivity.size() < 365) {
 			return;
+		}
+
+		Calendar finish = Calendar.getInstance();
+		finish.add(Calendar.DAY_OF_MONTH, 7 - finish.get(Calendar.DAY_OF_WEEK) - 1);
+
+		Calendar current = Calendar.getInstance();
+		current.setTime(userActivity.get(userActivity.size() - 1).getDate());
+		while (current.before(finish)) {
+			userActivity.add(new DayActivity(username, current.getTime(), 0));
+			current.add(Calendar.DAY_OF_MONTH, 1);
 		}
 
 		ActivityColor minColor = new ActivityColor(Color.parseColor("#30FFFFFF"));
@@ -41,15 +55,66 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 
-		int index = Math.max(userActivity.size() - 7, 0);
+		List<Integer> ids = Arrays.asList(
 
-		remoteViews.setInt(R.id.cell_0_0, "setBackgroundColor", ActivityColor.calculateColor(minColor, maxColor, maxActivity, userActivity.get(index++).getCount()));
-		remoteViews.setInt(R.id.cell_0_1, "setBackgroundColor", ActivityColor.calculateColor(minColor, maxColor, maxActivity, userActivity.get(index++).getCount()));
-		remoteViews.setInt(R.id.cell_0_2, "setBackgroundColor", ActivityColor.calculateColor(minColor, maxColor, maxActivity, userActivity.get(index++).getCount()));
-		remoteViews.setInt(R.id.cell_0_3, "setBackgroundColor", ActivityColor.calculateColor(minColor, maxColor, maxActivity, userActivity.get(index++).getCount()));
-		remoteViews.setInt(R.id.cell_0_4, "setBackgroundColor", ActivityColor.calculateColor(minColor, maxColor, maxActivity, userActivity.get(index++).getCount()));
-		remoteViews.setInt(R.id.cell_0_5, "setBackgroundColor", ActivityColor.calculateColor(minColor, maxColor, maxActivity, userActivity.get(index++).getCount()));
-		remoteViews.setInt(R.id.cell_0_6, "setBackgroundColor", ActivityColor.calculateColor(minColor, maxColor, maxActivity, userActivity.get(index++).getCount()));
+				R.id.cell_00_0,
+				R.id.cell_00_1,
+				R.id.cell_00_2,
+				R.id.cell_00_3,
+				R.id.cell_00_4,
+				R.id.cell_00_5,
+				R.id.cell_00_6,
+
+				R.id.cell_01_0,
+				R.id.cell_01_1,
+				R.id.cell_01_2,
+				R.id.cell_01_3,
+				R.id.cell_01_4,
+				R.id.cell_01_5,
+				R.id.cell_01_6,
+
+				R.id.cell_02_0,
+				R.id.cell_02_1,
+				R.id.cell_02_2,
+				R.id.cell_02_3,
+				R.id.cell_02_4,
+				R.id.cell_02_5,
+				R.id.cell_02_6,
+
+				R.id.cell_03_0,
+				R.id.cell_03_1,
+				R.id.cell_03_2,
+				R.id.cell_03_3,
+				R.id.cell_03_4,
+				R.id.cell_03_5,
+				R.id.cell_03_6,
+
+				R.id.cell_04_0,
+				R.id.cell_04_1,
+				R.id.cell_04_2,
+				R.id.cell_04_3,
+				R.id.cell_04_4,
+				R.id.cell_04_5,
+				R.id.cell_04_6
+
+		);
+
+		Collections.reverse(ids);
+
+		int idIndex = ids.size() - 1;
+		int activityIndex = userActivity.size() - 1;
+
+		while (idIndex >= 0 && activityIndex >= 0) {
+
+			Integer id = ids.get(idIndex);
+			DayActivity activity = userActivity.get(activityIndex);
+
+			int color = ActivityColor.calculateColor(minColor, maxColor, maxActivity, activity.getCount());
+			remoteViews.setInt(id, "setBackgroundColor", color);
+
+			idIndex--;
+			activityIndex--;
+		}
 
 		widgetManager.updateAppWidget(widgetId, remoteViews);
 	}
