@@ -35,6 +35,14 @@ public class Storage {
 	}
 
 	public void updateUserActivity(final String username, final List<DayActivityFromServer> userActivity) {
+
+		if (L.isTraceEnabled()) {
+			L.trace("User: {}", username);
+			for (DayActivityFromServer activity : userActivity) {
+				L.trace("  Activity: {} | {}", activity.getDate().toString(), activity.getActivityCount());
+			}
+		}
+
 		//TODO Pass into method DayActivity for DB
 		session.runInTx(new Runnable() {
 			@Override

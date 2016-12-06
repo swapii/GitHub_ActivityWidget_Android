@@ -1,6 +1,8 @@
 package github.activity;
 
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
@@ -16,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import github.activity.ui.widget.ActivityWidgetProvider;
 
 /**
  * Created by asavinova on 28/03/15.
@@ -51,10 +55,21 @@ public class UpdateService extends Service {
 
 	@Background
 	void updateData() {
+		L.trace("Update data");
 		try {
 			GitHubClient client = new GitHubClient();
 			List<DayActivityFromServer> userActivity = client.getUserActivity("swapii");
 			storage.updateUserActivity("swapii", userActivity);
+
+			AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
+
+			ComponentName componentName = new ComponentName(this, ActivityWidgetProvider.class);
+
+			for (int widgetId : widgetManager.getAppWidgetIds(componentName)) {
+				L.info("Widget ID: {}", widgetId);
+				ActivityWidgetProvider.updateWidget(this, widgetId);
+			}
+
 		} catch (GitHubClient.PageParseException e) {
 			e.printStackTrace();
 		} finally {

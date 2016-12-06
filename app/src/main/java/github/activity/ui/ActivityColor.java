@@ -19,6 +19,20 @@ public class ActivityColor {
 		v = hsv[2];
 	}
 
+	public static int calculateColor(ActivityColor minColor, ActivityColor maxColor, int maxActivity, int currentActivity) {
+
+		float coeff = (float) currentActivity / maxActivity;
+
+		int a = (int) (minColor.getAlpha() + (maxColor.getAlpha() - minColor.getAlpha()) * coeff);
+		float h = minColor.getH() + (maxColor.getH() - minColor.getH()) * coeff;
+		float s = minColor.getS() + (maxColor.getS() - minColor.getS()) * coeff;
+		float v = minColor.getV() + (maxColor.getV() - minColor.getV()) * coeff;
+
+		int color = Color.HSVToColor(new float[]{h, s, v});
+		color = Color.argb(a, Color.red(color), Color.green(color), Color.blue(color));
+		return color;
+	}
+
 	public int getAlpha() {
 		return alpha;
 	}
