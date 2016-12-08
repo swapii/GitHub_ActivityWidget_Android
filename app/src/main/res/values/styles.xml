@@ -4,9 +4,9 @@
     </style>
 
 	<style name="Widget_Cell">
-		<item name="android:layout_width">10dp</item>
-		<item name="android:layout_height">10dp</item>
-		<item name="android:layout_margin">1dp</item>
+		<item name="android:layout_width">10dip</item>
+		<item name="android:layout_height">10dip</item>
+		<item name="android:layout_margin">1dip</item>
 	</style>
 
 	<style name="Widget_Week">
