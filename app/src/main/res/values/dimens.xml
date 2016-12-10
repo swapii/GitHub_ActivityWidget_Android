@@ -1,3 +1,5 @@
 <resources>
 	<dimen name="widget_margin">8dp</dimen>
+	<dimen name="widget_grid_cell_size">10dip</dimen>
+	<dimen name="widget_grid_cell_margin">1dip</dimen>
 </resources>

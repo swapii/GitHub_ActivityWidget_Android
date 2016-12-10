@@ -3,8 +3,11 @@ package github.activity.ui.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import org.slf4j.Logger;
@@ -55,7 +58,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 
-		List<Integer> weekIds = Arrays.asList(
+		List<Integer> weekViewIds = Arrays.asList(
 
 				R.id.week_00,
 				R.id.week_01,
@@ -91,7 +94,29 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 				R.id.week_29
 
 		);
-		Collections.reverse(weekIds);
+
+		Bundle widgetOptions = widgetManager.getAppWidgetOptions(widgetId);
+		int width = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+
+		int defaultWidgetCellSize = 74;
+		int gridCells = Math.round((float) width / defaultWidgetCellSize);
+		width -= gridCells * 8;
+
+		Resources resources = context.getResources();
+		DisplayMetrics metrics = resources.getDisplayMetrics();
+
+		float density = metrics.density;
+		float cellSize = resources.getDimension(R.dimen.widget_grid_cell_size) / density;
+		float cellMargin = resources.getDimension(R.dimen.widget_grid_cell_margin) / density;
+		float cellSumWidth = cellSize + cellMargin;
+
+		int visibleWeeks = (int) (width / cellSumWidth);
+
+		for (int week = 0; week < weekViewIds.size(); week++) {
+			Integer weekId = weekViewIds.get(week);
+			int visibility = week < visibleWeeks ? View.VISIBLE : View.GONE;
+			remoteViews.setViewVisibility(weekId, visibility);
+		}
 
 		List<Integer> cellIds = Arrays.asList(
 
