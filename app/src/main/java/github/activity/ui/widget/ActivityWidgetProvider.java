@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,16 +49,29 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 	}
 
 	private static void fillUserActivityToFullWeek(String username, List<DayActivity> userActivity) {
+
 		Calendar lastDay = Calendar.getInstance();
-		lastDay.add(Calendar.DAY_OF_MONTH, 7 - lastDay.get(Calendar.DAY_OF_WEEK) - 1);
+		lastDay = DateUtils.truncate(lastDay, Calendar.DAY_OF_MONTH);
+		L.trace("Today: {}", lastDay.getTime().toString());
+
+		//TODO Get preferred last day of week from user preferences
+		int preferredLastDayOfWeek = Calendar.SUNDAY;
+		while (lastDay.get(Calendar.DAY_OF_WEEK) != preferredLastDayOfWeek) {
+			lastDay.add(Calendar.DAY_OF_WEEK, 1);
+		}
+
+		DayActivity lastSavedUserActivity = userActivity.get(userActivity.size() - 1);
 
 		Calendar currentDay = Calendar.getInstance();
-		currentDay.setTime(userActivity.get(userActivity.size() - 1).getDate());
+		currentDay.setTime(lastSavedUserActivity.getDate());
+		currentDay = DateUtils.truncate(currentDay, Calendar.DAY_OF_MONTH);
 
 		while (currentDay.before(lastDay)) {
+			L.trace("Add fictive day: {}", currentDay.getTime().toString());
 			userActivity.add(new DayActivity(username, currentDay.getTime(), 0));
 			currentDay.add(Calendar.DAY_OF_MONTH, 1);
 		}
+
 	}
 
 	private static void setCellsColor(RemoteViews remoteViews, ActivityWidget widget, List<DayActivity> userActivity) {
