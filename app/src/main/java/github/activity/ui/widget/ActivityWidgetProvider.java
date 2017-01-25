@@ -1,8 +1,10 @@
 package github.activity.ui.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +21,7 @@ import github.activity.R;
 import github.activity.Storage_;
 import github.activity.dao.DayActivity;
 import github.activity.ui.ActivityColor;
+import github.activity.ui.PreferencesActivity_;
 
 /**
  * Created by asavinova on 26/12/14.
@@ -42,7 +45,16 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 
 		fillUserActivityToFullWeek(username, userActivity);
 
+		Intent preferencesActivityIntent = PreferencesActivity_.intent(context)
+				.widgetId(widgetId)
+				.get();
+		PendingIntent intent = PendingIntent.getActivity(
+				context, widgetId,
+				preferencesActivityIntent,
+				PendingIntent.FLAG_CANCEL_CURRENT);
+
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
+		remoteViews.setOnClickPendingIntent(R.id.container, intent);
 		setWeeksVisibility(remoteViews, widget);
 		setCellsColor(remoteViews, widget, userActivity);
 		widgetManager.updateAppWidget(widgetId, remoteViews);

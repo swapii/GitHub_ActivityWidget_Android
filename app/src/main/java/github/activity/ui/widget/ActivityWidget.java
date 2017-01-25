@@ -112,20 +112,15 @@ public class ActivityWidget {
 		widgetManager = AppWidgetManager.getInstance(context);
 	}
 
-	int getWidth() {
-		Bundle widgetOptions = widgetManager.getAppWidgetOptions(widgetId);
-		return widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-	}
-
-	public List<Integer> getWeekViewIds() {
+	List<Integer> getWeekViewIds() {
 		return WEEK_VIEW_IDS;
 	}
 
-	public List<Integer> getCellViewIdsDesc() {
+	List<Integer> getCellViewIdsDesc() {
 		return CELL_VIEW_IDS_DESC;
 	}
 
-	public int getVisibleWeeksCount() {
+	int getVisibleWeeksCount() {
 		int width = getWidth();
 
 		int defaultWidgetCellSize = 74;
@@ -144,8 +139,20 @@ public class ActivityWidget {
 	}
 
 	public String getUsername() {
-		//TODO Get username from options bundle
-		return "swapii";
+		Bundle options = widgetManager.getAppWidgetOptions(widgetId);
+		return new WidgetOptions(options).getUsername();
+	}
+
+	public void setUsername(String username) {
+		Bundle options = widgetManager.getAppWidgetOptions(widgetId);
+		WidgetOptions widgetOptions = new WidgetOptions(options);
+		widgetOptions.setUsername(username);
+		widgetManager.updateAppWidgetOptions(widgetId, widgetOptions.toBundle());
+	}
+
+	private int getWidth() {
+		Bundle options = widgetManager.getAppWidgetOptions(widgetId);
+		return options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
 	}
 
 }
