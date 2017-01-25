@@ -1,6 +1,7 @@
 package github.activity.ui;
 
 import android.app.Activity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import github.activity.ui.widget.ActivityWidget;
 @EActivity(R.layout.widget_preferences)
 public class PreferencesActivity extends Activity {
 
-	@ViewById(R.id.widget_id) TextView widgetIdView;
+	@ViewById(R.id.toolbar) Toolbar toolbarView;
 	@ViewById(R.id.username) EditText usernameEditText;
 
 	@Extra int widgetId;
@@ -35,7 +36,8 @@ public class PreferencesActivity extends Activity {
 
 	@AfterViews
 	void afterViews() {
-		widgetIdView.setText(String.valueOf(widgetId));
+		toolbarView.setTitle(R.string.preferences_title);
+		toolbarView.setSubtitle(R.string.preferences_subtitle);
 	}
 
 	@Override

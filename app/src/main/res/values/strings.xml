@@ -2,6 +2,10 @@
 <resources>
 
     <string name="app_name">GitHub Activity</string>
-    <string name="main_title">MainActivity</string>
+
+	<string name="main_title">MainActivity</string>
+
+	<string name="preferences_title">GitHub Activity Widget</string>
+	<string name="preferences_subtitle">Preferences</string>
 
 </resources>
