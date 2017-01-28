@@ -17,9 +17,12 @@ import org.androidannotations.annotations.SystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import github.activity.ui.widget.ActivityWidgetProvider;
+import github.activity.ui.widget.WidgetOptions;
 
 /**
  * Created by asavinova on 28/03/15.
@@ -29,10 +32,11 @@ public class UpdateService extends Service {
 
 	private static final Logger L = LoggerFactory.getLogger(UpdateService.class);
 
-	private boolean isStarted;
-
 	@Bean Storage storage;
+
 	@SystemService ConnectivityManager connectivityManager;
+
+	private boolean isStarted;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -57,21 +61,31 @@ public class UpdateService extends Service {
 	void updateData() {
 		L.trace("Update data");
 		try {
-			GitHubClient client = new GitHubClient();
-			List<DayActivityFromServer> userActivity = client.getUserActivity("swapii");
-			storage.updateUserActivity("swapii", userActivity);
 
 			AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
 
+			Set<String> usernameSet = new HashSet<>();
+
 			ComponentName componentName = new ComponentName(this, ActivityWidgetProvider.class);
+			for (int widgetId : widgetManager.getAppWidgetIds(componentName)) {
+                WidgetOptions options = new WidgetOptions(widgetManager.getAppWidgetOptions(widgetId));
+                usernameSet.add(options.getUsername());
+            }
+
+			for (String username : usernameSet) {
+                try {
+                    GitHubClient client = new GitHubClient();
+                    List<DayActivityFromServer> userActivity = client.getUserActivity(username);
+                    storage.updateUserActivity(username, userActivity);
+				} catch (GitHubClient.PageParseException e) {
+                    e.printStackTrace();
+                }
+            }
 
 			for (int widgetId : widgetManager.getAppWidgetIds(componentName)) {
-				L.info("Widget ID: {}", widgetId);
 				ActivityWidgetProvider.updateWidget(this, widgetId);
 			}
 
-		} catch (GitHubClient.PageParseException e) {
-			e.printStackTrace();
 		} finally {
 			stopSelf();
 		}
