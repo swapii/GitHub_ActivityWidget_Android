@@ -7,10 +7,10 @@ targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
 
-	api 'org.slf4j:slf4j-api:1.7.21'
+	api 'org.slf4j:slf4j-api:1.7.25'
 
 	testImplementation 'junit:junit:4.12'
-	testImplementation 'commons-io:commons-io:2.5'
+	testImplementation 'commons-io:commons-io:2.6'
 	testImplementation 'org.slf4j:slf4j-simple:1.7.21'
 
 }
