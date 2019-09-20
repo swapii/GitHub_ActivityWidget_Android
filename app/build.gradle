@@ -1,5 +1,8 @@
-apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+plugins {
+	id 'com.android.application'
+	id 'kotlin-android'
+	id 'org.jetbrains.kotlin.kapt'
+}
 
 android {
 
@@ -21,27 +24,21 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def name = output.outputFile.name
-                    .replace('app-', 'GithubActivityWidget-')
-                    .replace('.apk', "-${variant.versionName}-b${variant.versionCode}.apk")
-                    .replace('-release', '')
-            output.outputFile = new File(output.outputFile.parent, name)
-        }
-    }
+	applicationVariants.all { variant ->
+		variant.outputs.all {
+			outputFileName = outputFileName
+				.replace('app-', 'GithubActivityWidget-')
+				.replace('.apk', "-${variant.versionName}-b${variant.versionCode}.apk")
+				.replace('-release', '')
+		}
+	}
 
 }
 
-configurations {
-	apt
-}
-
-apt {
+kapt {
 	arguments {
-		logLevel 'warn'
-		logAppenderConsole true
-		androidManifestFile 'app/src/main/AndroidManifest.xml'
+		arg('androidManifestFile', android.applicationVariants[0].outputs[0].processResources.manifestFile)
+		arg('resourcePackageName', android.defaultConfig.applicationId)
 	}
 }
 
@@ -50,7 +47,7 @@ dependencies {
 	compile project(':dao')
 	compile project(':github')
 
-	apt 'org.androidannotations:androidannotations:3.1'
+	kapt 'org.androidannotations:androidannotations:3.1'
 	compile 'org.androidannotations:androidannotations-api:3.1'
 
     compile 'com.android.support:appcompat-v7:25.0.1'
