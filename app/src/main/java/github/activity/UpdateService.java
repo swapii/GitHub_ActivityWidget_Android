@@ -7,11 +7,10 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
-import com.github.OneDayActivityFromServer;
 import com.github.GitHubClient;
+import com.github.OneDayActivityFromServer;
 
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.SystemService;
 import org.slf4j.Logger;
@@ -21,22 +20,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import github.activity.ui.widget.ActivityWidgetProvider;
 import github.activity.ui.widget.WidgetOptions;
 
-/**
- * Created by asavinova on 28/03/15.
- */
 @EService
 public class UpdateService extends Service {
 
 	private static final Logger L = LoggerFactory.getLogger(UpdateService.class);
 
-	@Bean Storage storage;
+	@Inject Storage storage;
 
 	@SystemService ConnectivityManager connectivityManager;
 
 	private boolean isStarted;
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		((App) getApplication()).getComponent().inject(this);
+	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -83,10 +87,6 @@ public class UpdateService extends Service {
                     e.printStackTrace();
                 }
             }
-
-			for (int widgetId : widgetManager.getAppWidgetIds(componentName)) {
-				ActivityWidgetProvider.updateWidget(this, widgetId);
-			}
 
 		} finally {
 			stopSelf();

@@ -5,11 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.github.OneDayActivityFromServer;
 
-import org.androidannotations.annotations.EBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import de.greenrobot.dao.query.QueryBuilder;
 import github.activity.dao.DaoMaster;
@@ -17,16 +18,13 @@ import github.activity.dao.DaoSession;
 import github.activity.dao.DayActivity;
 import github.activity.dao.DayActivityDao;
 
-/**
- * Created by asavinova on 28/03/15.
- */
-@EBean(scope = EBean.Scope.Singleton)
 public class Storage {
 
 	private static final Logger L = LoggerFactory.getLogger(Storage.class);
 
 	private DaoSession session;
 
+	@Inject
 	protected Storage(Context context) {
 		DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "main", null);
 		SQLiteDatabase db = helper.getWritableDatabase();

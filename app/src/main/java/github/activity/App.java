@@ -10,6 +10,8 @@ import org.androidannotations.annotations.SystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dagger.android.DaggerApplication;
+
 /**
  * Created by pavel on 22/03/15.
  */
@@ -22,11 +24,22 @@ public class App extends Application {
 
 	@SystemService AlarmManager alarmManager;
 
+	private ApplicationComponent component;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		L.trace("App create");
 		tuneAlarm();
+
+		component = DaggerApplicationComponent.builder()
+			.applicationModule(new ApplicationComponent.ApplicationModule(this))
+			.build();
+
+	}
+
+	public ApplicationComponent getComponent() {
+		return component;
 	}
 
 	private void tuneAlarm() {

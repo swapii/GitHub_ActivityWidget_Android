@@ -8,4 +8,9 @@ object Dependencies {
         const val simple = "org.slf4j:slf4j-simple:${Versions.slf4j}"
     }
 
+    object Dagger {
+        const val android = "com.google.dagger:dagger-android:${Versions.dagger}"
+        const val compiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+    }
+
 }

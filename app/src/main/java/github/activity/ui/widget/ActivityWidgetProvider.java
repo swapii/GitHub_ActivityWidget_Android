@@ -17,8 +17,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import github.activity.App;
 import github.activity.R;
-import github.activity.Storage_;
+import github.activity.Storage;
 import github.activity.dao.DayActivity;
 import github.activity.ui.ActivityColor;
 import github.activity.ui.PreferencesActivity_;
@@ -27,14 +30,39 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 
 	private static final Logger L = LoggerFactory.getLogger(ActivityWidgetProvider.class);
 
-	public static void updateWidget(Context context, int widgetId) {
+	@Inject Storage storage;
+
+	@Override
+	public void onUpdate(Context context, AppWidgetManager widgetManager, int[] widgetIds) {
+		L.trace("On update");
+		inject(context);
+		for (int widgetId : widgetIds) {
+			updateWidget(context, widgetId);
+		}
+	}
+
+	private void inject(Context context) {
+		if (storage != null) {
+			return;
+		}
+		((App) context.getApplicationContext()).getComponent().inject(this);
+	}
+
+	@Override
+	public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+		L.trace("Widget {} options changed", appWidgetId);
+		inject(context);
+		updateWidget(context, appWidgetId);
+	}
+
+	public void updateWidget(Context context, int widgetId) {
 
 		AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
 
 		ActivityWidget widget = new ActivityWidget(context, widgetId);
 
 		String username = widget.getUsername();
-		List<DayActivity> userActivity = Storage_.getInstance_(context).getUserActivity(username);
+		List<DayActivity> userActivity = storage.getUserActivity(username);
 
 		if (userActivity.size() < 365) {
 			return;
@@ -57,7 +85,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 		widgetManager.updateAppWidget(widgetId, remoteViews);
 	}
 
-	private static void fillUserActivityToFullWeek(String username, List<DayActivity> userActivity) {
+	private void fillUserActivityToFullWeek(String username, List<DayActivity> userActivity) {
 
 		Calendar lastDay = Calendar.getInstance();
 		lastDay = DateUtils.truncate(lastDay, Calendar.DAY_OF_MONTH);
@@ -83,7 +111,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 
 	}
 
-	private static void setCellsColor(RemoteViews remoteViews, ActivityWidget widget, List<DayActivity> userActivity) {
+	private void setCellsColor(RemoteViews remoteViews, ActivityWidget widget, List<DayActivity> userActivity) {
 		List<Integer> cellIds = widget.getCellViewIdsDesc();
 
 		ActivityColor minColor = ActivityColor.Companion.fromIntValue(Color.parseColor("#30FFFFFF"));
@@ -108,7 +136,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 		}
 	}
 
-	private static void setWeeksVisibility(RemoteViews remoteViews, ActivityWidget widget) {
+	private void setWeeksVisibility(RemoteViews remoteViews, ActivityWidget widget) {
 		List<Integer> weekViewIds = widget.getWeekViewIds();
 
 		int visibleWeeksCount = widget.getVisibleWeeksCount();
@@ -120,26 +148,12 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 		}
 	}
 
-	public static int findMaxActivity(List<DayActivity> userActivity) {
+	public int findMaxActivity(List<DayActivity> userActivity) {
 		int maxActivity = 0;
 		for (DayActivity activity : userActivity) {
 			maxActivity = Math.max(maxActivity, activity.getCount());
 		}
 		return maxActivity;
-	}
-
-	@Override
-	public void onUpdate(Context context, AppWidgetManager widgetManager, int[] widgetIds) {
-		L.trace("On update");
-		for (int widgetId : widgetIds) {
-			updateWidget(context, widgetId);
-		}
-	}
-
-	@Override
-	public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-		L.trace("Widget {} options changed", appWidgetId);
-		updateWidget(context, appWidgetId);
 	}
 
 }

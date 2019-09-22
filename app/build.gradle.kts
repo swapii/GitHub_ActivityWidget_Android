@@ -57,6 +57,9 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
 
+    implementation(Dependencies.Dagger.android)
+    kapt(Dependencies.Dagger.compiler)
+
     kapt("org.androidannotations:androidannotations:3.1")
     implementation("org.androidannotations:androidannotations-api:3.1")
 
