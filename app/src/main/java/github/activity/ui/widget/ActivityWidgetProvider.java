@@ -23,9 +23,6 @@ import github.activity.dao.DayActivity;
 import github.activity.ui.ActivityColor;
 import github.activity.ui.PreferencesActivity_;
 
-/**
- * Created by asavinova on 26/12/14.
- */
 public class ActivityWidgetProvider extends AppWidgetProvider {
 
 	private static final Logger L = LoggerFactory.getLogger(ActivityWidgetProvider.class);
@@ -89,8 +86,8 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 	private static void setCellsColor(RemoteViews remoteViews, ActivityWidget widget, List<DayActivity> userActivity) {
 		List<Integer> cellIds = widget.getCellViewIdsDesc();
 
-		ActivityColor minColor = new ActivityColor(Color.parseColor("#30FFFFFF"));
-		ActivityColor maxColor = new ActivityColor(Color.parseColor("#FFFFFFFF"));
+		ActivityColor minColor = ActivityColor.Companion.fromIntValue(Color.parseColor("#30FFFFFF"));
+		ActivityColor maxColor = ActivityColor.Companion.fromIntValue(Color.parseColor("#FFFFFFFF"));
 
 		int maxActivity = findMaxActivity(userActivity);
 
@@ -103,7 +100,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 			Integer id = cellIds.get(idIndex);
 			DayActivity activity = userActivity.get(activityIndex);
 
-			int color = ActivityColor.calculateColor(minColor, maxColor, maxActivity, activity.getCount());
+			int color = ActivityColor.Companion.calculateColor(minColor, maxColor, maxActivity, activity.getCount());
 			remoteViews.setInt(id, "setBackgroundColor", color);
 
 			idIndex--;

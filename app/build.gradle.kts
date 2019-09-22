@@ -55,6 +55,8 @@ dependencies {
     implementation(project(":dao"))
     implementation(project(":github"))
 
+    implementation(kotlin("stdlib-jdk8"))
+
     kapt("org.androidannotations:androidannotations:3.1")
     implementation("org.androidannotations:androidannotations-api:3.1")
 
