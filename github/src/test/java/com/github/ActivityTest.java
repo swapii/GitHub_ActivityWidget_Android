@@ -20,10 +20,10 @@ public class ActivityTest {
 
 	@Test
 	public void jakeWartonIsNotLazy() throws GitHubClient.PageParseException {
-		List<DayActivityFromServer> activityList = client.getUserActivity("JakeWharton");
+		List<OneDayActivityFromServer> activityList = client.getUserActivity("JakeWharton");
 		Assert.assertFalse(activityList.isEmpty());
 		int sum = 0;
-		for (DayActivityFromServer activity : activityList) {
+		for (OneDayActivityFromServer activity : activityList) {
 			sum += activity.getActivityCount();
 		}
 		double averageActivity = (double) sum / activityList.size();

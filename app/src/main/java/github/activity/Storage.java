@@ -3,7 +3,7 @@ package github.activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.github.DayActivityFromServer;
+import com.github.OneDayActivityFromServer;
 
 import org.androidannotations.annotations.EBean;
 import org.slf4j.Logger;
@@ -34,11 +34,11 @@ public class Storage {
 		session = master.newSession();
 	}
 
-	public void updateUserActivity(final String username, final List<DayActivityFromServer> userActivity) {
+	public void updateUserActivity(final String username, final List<OneDayActivityFromServer> userActivity) {
 
 		if (L.isTraceEnabled()) {
 			L.trace("User: {}", username);
-			for (DayActivityFromServer activity : userActivity) {
+			for (OneDayActivityFromServer activity : userActivity) {
 				L.trace("  Activity: {} | {}", activity.getDate().toString(), activity.getActivityCount());
 			}
 		}
@@ -56,7 +56,7 @@ public class Storage {
 						.executeDeleteWithoutDetachingEntities();
 				L.trace("Activities count after clean: " + dao.count());
 
-				for (DayActivityFromServer serverActivity : userActivity) {
+				for (OneDayActivityFromServer serverActivity : userActivity) {
 					DayActivity dbActivity = new DayActivity(username, serverActivity.getDate(), serverActivity.getActivityCount());
 					dao.insert(dbActivity);
 				}

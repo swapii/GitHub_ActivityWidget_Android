@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
-import com.github.DayActivityFromServer;
+import com.github.OneDayActivityFromServer;
 import com.github.GitHubClient;
 
 import org.androidannotations.annotations.Background;
@@ -75,7 +75,9 @@ public class UpdateService extends Service {
 			for (String username : usernameSet) {
                 try {
                     GitHubClient client = new GitHubClient();
-                    List<DayActivityFromServer> userActivity = client.getUserActivity(username);
+                    List<OneDayActivityFromServer> userActivity = client.getUserActivity(username)
+						.toList()
+						.blockingGet();
                     storage.updateUserActivity(username, userActivity);
 				} catch (GitHubClient.PageParseException e) {
                     e.printStackTrace();
