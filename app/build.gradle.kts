@@ -72,6 +72,6 @@ dependencies {
 
     implementation("com.noveogroup.android:android-logger:1.3.5")
 
-    implementation("org.apache.commons:commons-lang3:3.6")
+    implementation("org.apache.commons:commons-lang3:3.7")
 
 }
