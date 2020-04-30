@@ -12,7 +12,6 @@ object Versions {
         const val minSdkVersion = 16
         const val targetSdkVersion = 25
         const val compileSdkVersion = 25
-        const val buildToolsVersion = "25.4.0"
     }
 
     object ApacheCommons {
