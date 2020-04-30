@@ -5,7 +5,7 @@ object Versions {
     const val junit = "4.12"
     const val greenDao = "1.3.7"
     const val okHttp = "4.2.0"
-    const val rxJava = "3.0.0-RC3"
+    const val rxJava = "3.0.2"
     const val dagger = "2.15"
 
     object Android {
