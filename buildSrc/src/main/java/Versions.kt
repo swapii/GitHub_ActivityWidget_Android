@@ -4,7 +4,7 @@ object Versions {
     const val slf4j = "1.7.25"
     const val junit = "4.12"
     const val greenDao = "1.3.7"
-    const val okHttp = "4.2.0"
+    const val okHttp = "4.6.0"
     const val rxJava = "3.0.2"
     const val dagger = "2.27"
 
