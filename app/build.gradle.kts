@@ -9,7 +9,6 @@ plugins {
 android {
 
     compileSdkVersion(Versions.Android.compileSdkVersion)
-    buildToolsVersion(Versions.Android.buildToolsVersion)
 
     defaultConfig {
 
@@ -41,6 +40,11 @@ android {
                 }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
 }
 
 kapt {
@@ -68,6 +72,6 @@ dependencies {
 
     implementation("com.noveogroup.android:android-logger:1.3.5")
 
-    implementation("org.apache.commons:commons-lang3:3.6")
+    implementation("org.apache.commons:commons-lang3:3.7")
 
 }

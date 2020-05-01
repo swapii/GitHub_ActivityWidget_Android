@@ -4,7 +4,6 @@ plugins {
 
 android {
 	compileSdkVersion(Versions.Android.compileSdkVersion)
-	buildToolsVersion(Versions.Android.buildToolsVersion)
 }
 
 dependencies {
