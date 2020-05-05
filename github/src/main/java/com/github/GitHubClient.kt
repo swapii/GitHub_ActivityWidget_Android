@@ -13,17 +13,11 @@ class GitHubClient {
             .flatMap { pageSource -> parseDayActivity(pageSource) }
 
     private fun getPageSource(url: URL): Single<String> =
-        RxJavaBridge.toV3Single(
-            rxSingle {
-                GetWebPageSource(OkHttpClient())(url)
-            }
-        )
+        rxSingle { GetWebPageSource(OkHttpClient())(url) }.toV3()
 
     private fun parseDayActivity(pageSource: String): Single<List<OneDayActivityFromServer>> =
-        RxJavaBridge.toV3Single(
-            rxSingle {
-                ParseDayActivity()(pageSource)
-            }
-        )
+        rxSingle { ParseDayActivity()(pageSource) }.toV3()
+
+    private fun <T> io.reactivex.Single<T>.toV3(): Single<T> = RxJavaBridge.toV3Single(this)
 
 }
