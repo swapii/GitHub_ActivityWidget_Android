@@ -43,7 +43,7 @@
 		</activity>
 
 		<activity
-			android:name=".ui.PreferencesActivity_"
+			android:name=".ui.PreferencesActivity"
 			android:theme="@style/Dialog_Activity"
 			android:label="@string/preferences_title"/>
 
