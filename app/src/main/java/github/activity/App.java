@@ -5,24 +5,16 @@ import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Intent;
 
-import org.androidannotations.annotations.EApplication;
-import org.androidannotations.annotations.SystemService;
+import androidx.core.content.ContextCompat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dagger.android.DaggerApplication;
-
-/**
- * Created by pavel on 22/03/15.
- */
-@EApplication
 public class App extends Application {
 
 	private static final Logger L = LoggerFactory.getLogger(App.class);
 
 	public static final int DATA_UPDATE_INTERVAL = 1000 * 60 * 60;
-
-	@SystemService AlarmManager alarmManager;
 
 	private ApplicationComponent component;
 
@@ -33,8 +25,8 @@ public class App extends Application {
 		tuneAlarm();
 
 		component = DaggerApplicationComponent.builder()
-			.applicationModule(new ApplicationComponent.ApplicationModule(this))
-			.build();
+				.applicationModule(new ApplicationComponent.ApplicationModule(this))
+				.build();
 
 	}
 
@@ -47,12 +39,14 @@ public class App extends Application {
 		Intent serviceIntent = new Intent(this, UpdateService_.class);
 		PendingIntent alarmIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
 
-		alarmManager.setInexactRepeating(
-				AlarmManager.ELAPSED_REALTIME,
-				DATA_UPDATE_INTERVAL,
-				DATA_UPDATE_INTERVAL,
-				alarmIntent
-		);
+		ContextCompat.getSystemService(this, AlarmManager.class)
+				.setInexactRepeating(
+						AlarmManager.ELAPSED_REALTIME,
+						DATA_UPDATE_INTERVAL,
+						DATA_UPDATE_INTERVAL,
+						alarmIntent
+				);
+
 	}
 
 }
