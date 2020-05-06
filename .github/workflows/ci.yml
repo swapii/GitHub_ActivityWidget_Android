@@ -2,10 +2,10 @@ name: Continious integration
 
 on: [push]
 
-jobs:
+env:
+  ORG_GRADLE_PROJECT_GitHub_ActivityWidget_Android_versionCode: $GITHUB_RUN_NUMBER
 
-  env:
-    ORG_GRADLE_PROJECT_GitHub_ActivityWidget_Android_versionCode: $GITHUB_RUN_NUMBER
+jobs:
 
   build:
 
