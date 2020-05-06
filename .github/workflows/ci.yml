@@ -22,3 +22,8 @@ jobs:
 
       - name: Assemble release APK
         run: ./gradlew :app:assembleRelease
+
+      - name: Publish output artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: '**/build/outputs/**/*.*'
