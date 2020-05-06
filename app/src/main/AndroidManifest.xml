@@ -13,7 +13,7 @@
 		android:theme="@style/AppTheme">
 
 		<service
-			android:name=".UpdateService_"
+			android:name=".UpdateService"
 			android:exported="false" />
 
 		<receiver android:name=".ui.widget.ActivityWidgetProvider">

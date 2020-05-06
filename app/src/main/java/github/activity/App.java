@@ -36,7 +36,7 @@ public class App extends Application {
 
 	private void tuneAlarm() {
 
-		Intent serviceIntent = new Intent(this, UpdateService_.class);
+		Intent serviceIntent = new Intent(this, UpdateService.class);
 		PendingIntent alarmIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
 
 		ContextCompat.getSystemService(this, AlarmManager.class)
