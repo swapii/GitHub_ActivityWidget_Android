@@ -23,6 +23,7 @@ jobs:
       - name: Publish debug APK artifact
         uses: actions/upload-artifact@v2
         with:
+          name: apk-debug
           path: 'app/build/outputs/apk/debug/*.apk'
 
       - name: Assemble release APK
@@ -31,4 +32,5 @@ jobs:
       - name: Publish release APK artifact
         uses: actions/upload-artifact@v2
         with:
+          name: apk-release
           path: 'app/build/outputs/apk/release/*.apk'
