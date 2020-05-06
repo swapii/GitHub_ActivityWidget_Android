@@ -1,6 +1,6 @@
 package github.activity.ui;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.widget.EditText;
@@ -20,7 +20,7 @@ import github.activity.ui.widget.ActivityWidget;
  * Created by pavel on 24/01/2017.
  */
 @EActivity(R.layout.widget_preferences)
-public class PreferencesActivity extends Activity {
+public class PreferencesActivity extends AppCompatActivity {
 
 	@ViewById(R.id.toolbar) Toolbar toolbarView;
 	@ViewById(R.id.username) EditText usernameEditText;

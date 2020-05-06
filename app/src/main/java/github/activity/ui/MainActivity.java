@@ -3,7 +3,7 @@ package github.activity.ui;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import org.androidannotations.annotations.EActivity;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import github.activity.ui.widget.ActivityWidgetProvider;
 
 
 @EActivity(R.layout.main)
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
 	private static final Logger L = LoggerFactory.getLogger(MainActivity.class);
 

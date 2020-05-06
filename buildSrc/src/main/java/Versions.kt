@@ -10,8 +10,8 @@ object Versions {
 
     object Android {
         const val minSdkVersion = 16
-        const val targetSdkVersion = 25
-        const val compileSdkVersion = 25
+        const val targetSdkVersion = 28
+        const val compileSdkVersion = 28
     }
 
     object ApacheCommons {
