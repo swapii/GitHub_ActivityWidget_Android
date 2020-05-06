@@ -27,7 +27,7 @@ jobs:
       - name: Publish debug APK artifact
         uses: actions/upload-artifact@v2
         with:
-          name: GitHub-ActivityWidget-Android-app-debug
+          name: GitHub-ActivityWidget-Android-${{ github.run_number }}-app-debug
           path: 'app/build/outputs/apk/debug/*.apk'
 
       - name: Assemble release APK
@@ -36,5 +36,5 @@ jobs:
       - name: Publish release APK artifact
         uses: actions/upload-artifact@v2
         with:
-          name: GitHub-ActivityWidget-Android-app-release
+          name: GitHub-ActivityWidget-Android-${{ github.run_number }}-app-release
           path: 'app/build/outputs/apk/release/*.apk'
