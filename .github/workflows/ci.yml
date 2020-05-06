@@ -1,0 +1,36 @@
+name: Continious integration
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Assemble debug APK
+        run: ./gradlew :app:assembleDebug
+
+      - name: Publish debug APK artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: GitHub-ActivityWidget-Android-app-debug
+          path: 'app/build/outputs/apk/debug/*.apk'
+
+      - name: Assemble release APK
+        run: ./gradlew :app:assembleRelease
+
+      - name: Publish release APK artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: GitHub-ActivityWidget-Android-app-release
+          path: 'app/build/outputs/apk/release/*.apk'
