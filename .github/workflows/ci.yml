@@ -1,4 +1,4 @@
-name: CI
+name: Continious integration
 
 on: [push]
 
@@ -9,15 +9,16 @@ jobs:
 
     steps:
 
-      - name: checkout
+      - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: assemble-debug
-        uses: msfjarvis/setup-android@0.2
+      - name: Setup Java
+        uses: actions/setup-java@v1
         with:
-          gradleTasks: :app:assembleDebug
+          java-version: 1.8
 
-      - name: assemble-release
-        uses: msfjarvis/setup-android@0.2
-        with:
-          gradleTasks: :app:assembleRelease
+      - name: Assemble debug APK
+        run: ./gradlew :app:assembleDebug
+
+      - name: Assemble release APK
+        run: ./gradlew :app:assembleRelease
