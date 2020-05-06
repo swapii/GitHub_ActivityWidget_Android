@@ -3,7 +3,8 @@ package github.activity.ui;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.androidannotations.annotations.EActivity;
 import org.slf4j.Logger;
@@ -12,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import github.activity.R;
 import github.activity.UpdateService_;
 import github.activity.ui.widget.ActivityWidgetProvider;
-
 
 @EActivity(R.layout.main)
 public class MainActivity extends AppCompatActivity {

@@ -1,10 +1,11 @@
 package github.activity.ui;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterTextChange;
@@ -16,9 +17,6 @@ import org.androidannotations.annotations.ViewById;
 import github.activity.R;
 import github.activity.ui.widget.ActivityWidget;
 
-/**
- * Created by pavel on 24/01/2017.
- */
 @EActivity(R.layout.widget_preferences)
 public class PreferencesActivity extends AppCompatActivity {
 
