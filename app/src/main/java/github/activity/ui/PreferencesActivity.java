@@ -1,52 +1,70 @@
 package github.activity.ui;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterTextChange;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
 
 import github.activity.R;
 import github.activity.ui.widget.ActivityWidget;
 
-@EActivity(R.layout.widget_preferences)
 public class PreferencesActivity extends AppCompatActivity {
 
-	@ViewById(R.id.toolbar) Toolbar toolbarView;
-	@ViewById(R.id.username) EditText usernameEditText;
+	private static final String EXTRA_WIDGET_ID = "widget_id";
 
-	@Extra int widgetId;
+	private EditText usernameEditText;
 
 	private ActivityWidget widget;
 
-	@AfterInject
-	void afterInject() {
-		widget = new ActivityWidget(this, widgetId);
+	public static Intent createIntent(Context context, int widgetId) {
+		Intent intent = new Intent(context, PreferencesActivity.class);
+		intent.putExtra(EXTRA_WIDGET_ID, widgetId);
+		return intent;
 	}
 
-	@AfterViews
-	void afterViews() {
+	@Override
+	protected void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.widget_preferences);
+
+		int widgetId = getIntent().getIntExtra(EXTRA_WIDGET_ID, -1);
+
+		widget = new ActivityWidget(this, widgetId);
+
+		Toolbar toolbarView = findViewById(R.id.toolbar);
 		toolbarView.setTitle(R.string.preferences_title);
 		toolbarView.setSubtitle(R.string.preferences_subtitle);
+
+		usernameEditText = findViewById(R.id.username);
+		usernameEditText.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable text) {
+				widget.setUsername(text.toString().trim());
+			}
+
+		});
+
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		usernameEditText.setText(widget.getUsername());
-	}
-
-	@AfterTextChange(R.id.username)
-	void usernameChanged(TextView textView, Editable text) {
-		widget.setUsername(text.toString().trim());
 	}
 
 }

@@ -3,21 +3,27 @@ package github.activity.ui;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.androidannotations.annotations.EActivity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import github.activity.R;
-import github.activity.UpdateService_;
+import github.activity.UpdateService;
 import github.activity.ui.widget.ActivityWidgetProvider;
 
-@EActivity(R.layout.main)
 public class MainActivity extends AppCompatActivity {
 
 	private static final Logger L = LoggerFactory.getLogger(MainActivity.class);
+
+	@Override
+	protected void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+	}
 
 	@Override
 	protected void onResume() {
@@ -31,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 			L.info("Widget ID: {}", widgetId);
 		}
 
-		Intent intent = new Intent(this, UpdateService_.class);
+		Intent intent = new Intent(this, UpdateService.class);
 		startService(intent);
 
 	}

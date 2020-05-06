@@ -24,7 +24,7 @@ import github.activity.R;
 import github.activity.Storage;
 import github.activity.dao.DayActivity;
 import github.activity.ui.ActivityColor;
-import github.activity.ui.PreferencesActivity_;
+import github.activity.ui.PreferencesActivity;
 
 public class ActivityWidgetProvider extends AppWidgetProvider {
 
@@ -70,9 +70,8 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 
 		fillUserActivityToFullWeek(username, userActivity);
 
-		Intent preferencesActivityIntent = PreferencesActivity_.intent(context)
-				.widgetId(widgetId)
-				.get();
+		Intent preferencesActivityIntent = PreferencesActivity.createIntent(context, widgetId);
+
 		PendingIntent intent = PendingIntent.getActivity(
 				context, widgetId,
 				preferencesActivityIntent,

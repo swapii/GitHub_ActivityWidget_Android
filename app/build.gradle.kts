@@ -64,9 +64,6 @@ dependencies {
     implementation(Dependencies.Dagger.android)
     kapt(Dependencies.Dagger.compiler)
 
-    kapt("org.androidannotations:androidannotations:4.7.0")
-    implementation("org.androidannotations:androidannotations-api:4.7.0")
-
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
 
