@@ -14,7 +14,7 @@ android {
 
         applicationId = "github.activity"
 
-        versionCode = project.properties["versionCode"].toString().toInt()
+        versionCode = project.properties["GitHub_ActivityWidget_Android_versionCode"].toString().toInt()
         versionName = "1.0.0"
 
         minSdkVersion(Versions.Android.minSdkVersion)
