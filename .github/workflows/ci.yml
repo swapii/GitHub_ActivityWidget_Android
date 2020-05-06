@@ -20,10 +20,15 @@ jobs:
       - name: Assemble debug APK
         run: ./gradlew :app:assembleDebug
 
+      - name: Publish debug APK artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: 'app/build/outputs/apk/debug/*.apk'
+
       - name: Assemble release APK
         run: ./gradlew :app:assembleRelease
 
-      - name: Publish output artifacts
+      - name: Publish release APK artifact
         uses: actions/upload-artifact@v2
         with:
-          path: '**/build/outputs/**/*.*'
+          path: 'app/build/outputs/apk/release/*.apk'
