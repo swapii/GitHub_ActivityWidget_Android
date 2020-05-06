@@ -29,13 +29,13 @@ android {
         }
     }
 
-    applicationVariants.forEach { variant ->
-        variant.outputs
+    applicationVariants.all {
+        outputs
                 .map { it as BaseVariantOutputImpl }
                 .forEach { output ->
                     output.outputFileName = output.outputFileName
-                            .replace("app-", "GithubActivityWidget-")
-                            .replace(".apk", "-${variant.versionName}.${variant.versionCode}.apk")
+                            .replace("app-", "GitHub-ActivityWidget-Android-")
+                            .replace(".apk", "-$versionName.$versionCode.apk")
                             .replace("-release", "")
                 }
     }
