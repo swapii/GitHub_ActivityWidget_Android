@@ -6,7 +6,6 @@ object Versions {
     const val greenDao = "1.3.7"
     const val okHttp = "4.6.0"
     const val rxJava = "3.0.2"
-    const val dagger = "2.27"
 
     object Android {
         const val minSdkVersion = 16
