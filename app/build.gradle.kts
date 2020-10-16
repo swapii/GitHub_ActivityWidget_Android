@@ -65,7 +65,6 @@ dependencies {
     kapt(Dependencies.Dagger.compiler)
 
     implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.gridlayout:gridlayout:1.0.0")
 
     implementation("com.noveogroup.android:android-logger:1.3.5")
 
