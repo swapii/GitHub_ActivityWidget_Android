@@ -1,6 +1,6 @@
 object Versions {
 
-    const val kotlin = "1.3.71"
+    const val kotlin = "1.4.10"
     const val slf4j = "1.7.25"
     const val junit = "4.12"
     const val greenDao = "1.3.7"
