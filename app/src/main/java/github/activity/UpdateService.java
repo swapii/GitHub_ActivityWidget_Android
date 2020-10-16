@@ -8,6 +8,7 @@ import android.os.IBinder;
 
 import com.github.GitHubClient;
 import com.github.OneDayActivityFromServer;
+import com.github.PageParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,10 +73,9 @@ public class UpdateService extends Service {
                 try {
                     GitHubClient client = new GitHubClient();
                     List<OneDayActivityFromServer> userActivity = client.getUserActivity(username)
-						.toList()
 						.blockingGet();
                     storage.updateUserActivity(username, userActivity);
-				} catch (GitHubClient.PageParseException e) {
+				} catch (PageParseException e) {
                     e.printStackTrace();
                 }
             }
