@@ -8,7 +8,7 @@ object Versions {
     const val rxJava = "3.0.2"
 
     object Android {
-        const val minSdkVersion = 16
+        const val minSdkVersion = 21
         const val targetSdkVersion = 28
         const val compileSdkVersion = 28
     }
