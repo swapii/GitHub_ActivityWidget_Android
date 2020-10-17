@@ -1,52 +1,49 @@
 package github.activity;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Intent;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.work.Configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class App extends Application {
+import javax.inject.Inject;
+import javax.inject.Provider;
 
-	private static final Logger L = LoggerFactory.getLogger(App.class);
+import github.activity.feature.work.WorkerFactory;
 
-	public static final int DATA_UPDATE_INTERVAL = 1000 * 60 * 60;
+public class App extends Application implements Configuration.Provider {
 
-	private ApplicationComponent component;
+    private static final Logger L = LoggerFactory.getLogger(App.class);
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		L.trace("App create");
-		tuneAlarm();
+    private ApplicationComponent component;
 
-		component = DaggerApplicationComponent.builder()
-				.applicationModule(new ApplicationComponent.ApplicationModule(this))
-				.build();
+    @Inject
+    protected Provider<WorkerFactory> workerFactoryProvider;
 
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        L.trace("App create");
 
-	public ApplicationComponent getComponent() {
-		return component;
-	}
+        component = DaggerApplicationComponent.builder()
+            .applicationModule(new ApplicationComponent.ApplicationModule(this))
+            .build();
+        component.inject(this);
 
-	private void tuneAlarm() {
+    }
 
-		Intent serviceIntent = new Intent(this, UpdateService.class);
-		PendingIntent alarmIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
+    @NonNull
+    @Override
+    public Configuration getWorkManagerConfiguration() {
+        return new Configuration.Builder()
+            .setWorkerFactory(workerFactoryProvider.get())
+            .build();
+    }
 
-		ContextCompat.getSystemService(this, AlarmManager.class)
-				.setInexactRepeating(
-						AlarmManager.ELAPSED_REALTIME,
-						DATA_UPDATE_INTERVAL,
-						DATA_UPDATE_INTERVAL,
-						alarmIntent
-				);
-
-	}
+    public ApplicationComponent getComponent() {
+        return component;
+    }
 
 }

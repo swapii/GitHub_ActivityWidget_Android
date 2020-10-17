@@ -14,4 +14,15 @@ object Dependencies {
         const val compiler = "com.google.dagger:dagger-compiler:$version"
     }
 
+    object AndroidX {
+
+        const val appCompat = "androidx.appcompat:appcompat:1.2.0"
+
+        object Work {
+            private const val version = "2.4.0"
+            const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
+        }
+
+    }
+
 }

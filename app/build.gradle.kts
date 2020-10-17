@@ -64,7 +64,8 @@ dependencies {
     implementation(Dependencies.Dagger.android)
     kapt(Dependencies.Dagger.compiler)
 
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation(Dependencies.AndroidX.appCompat)
+    implementation(Dependencies.AndroidX.Work.runtimeKtx)
 
     implementation("com.noveogroup.android:android-logger:1.3.5")
 
