@@ -19,7 +19,7 @@ public class ActivityTest {
 	}
 
 	@Test
-	public void jakeWartonIsNotLazy() throws GitHubClient.PageParseException {
+	public void jakeWartonIsNotLazy() throws PageSourceParseException {
 		List<OneDayActivityFromServer> activityList = client.getUserActivity("JakeWharton");
 		Assert.assertFalse(activityList.isEmpty());
 		int sum = 0;

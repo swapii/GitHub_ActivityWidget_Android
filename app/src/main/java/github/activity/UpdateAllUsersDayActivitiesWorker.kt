@@ -3,14 +3,14 @@ package github.activity
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.github.GitHubClient
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import com.github.GetUserActivity
+import kotlinx.coroutines.coroutineScope
 
 class UpdateAllUsersDayActivitiesWorker(
     context: Context,
     workerParameters: WorkerParameters,
     private val getAllGitHubUsersUsedInWidgets: GetAllGitHubUsersUsedInWidgets,
+    private val getUserActivity: GetUserActivity,
     private val storage: Storage,
 ) : CoroutineWorker(
     context,
@@ -18,18 +18,15 @@ class UpdateAllUsersDayActivitiesWorker(
 ) {
 
     override suspend fun doWork(): Result =
-        suspendCoroutine {
-            val client = GitHubClient()
+        coroutineScope {
             getAllGitHubUsersUsedInWidgets()
                 .map { username ->
-                    username to client.getUserActivity(username)
-                        .toList()
-                        .blockingGet()
+                    username to getUserActivity(username)
                 }
                 .forEach { (username, activity) ->
                     storage.updateUserActivity(username, activity)
                 }
-            it.resume(Result.success())
+            Result.success()
         }
 
 }

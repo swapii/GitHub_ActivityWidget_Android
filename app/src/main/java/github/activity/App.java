@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.work.Configuration;
 
+import com.github.GitHubModule;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import github.activity.feature.work.WorkerFactory;
+import okhttp3.OkHttpClient;
 
 public class App extends Application implements Configuration.Provider {
 
@@ -29,7 +32,9 @@ public class App extends Application implements Configuration.Provider {
 
         component = DaggerApplicationComponent.builder()
             .applicationModule(new ApplicationComponent.ApplicationModule(this))
+            .gitHubModule(new GitHubModule(new OkHttpClient()))
             .build();
+
         component.inject(this);
 
     }

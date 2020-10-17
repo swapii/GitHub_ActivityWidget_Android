@@ -2,6 +2,8 @@ package github.activity
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import com.github.GetUserActivity
+import com.github.GitHubModule
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -9,7 +11,12 @@ import github.activity.feature.work.WorkerFactory
 import github.activity.ui.widget.ActivityWidgetProvider
 import javax.inject.Provider
 
-@Component(modules = [ApplicationComponent.ApplicationModule::class])
+@Component(
+    modules = [
+        ApplicationComponent.ApplicationModule::class,
+        GitHubModule::class,
+    ],
+)
 interface ApplicationComponent {
 
     fun inject(x: App)
@@ -38,10 +45,12 @@ interface ApplicationComponent {
         @Provides
         fun provideWorkerFactory(
             getAllGitHubUsersUsedInWidgets: Provider<GetAllGitHubUsersUsedInWidgets>,
+            getUserActivity: Provider<GetUserActivity>,
             storage: Provider<Storage>,
         ): WorkerFactory =
             WorkerFactory(
                 { getAllGitHubUsersUsedInWidgets.get() },
+                { getUserActivity.get() },
                 { storage.get() },
             )
 
