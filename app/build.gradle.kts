@@ -56,8 +56,8 @@ kapt {
 
 dependencies {
 
-    implementation(project(":dao"))
-    implementation(project(":github"))
+    implementation(project(":feature-dao"))
+    implementation(project(":feature-github"))
 
     implementation(kotlin("stdlib-jdk8"))
 
