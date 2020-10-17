@@ -14,13 +14,14 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import github.activity.R;
-import github.activity.dao.DayActivity;
+import github.activity.feature.userActivity.domain.DailyUserActivity;
 import github.activity.ui.ActivityColor;
 import github.activity.ui.PreferencesActivity;
 
@@ -62,13 +63,14 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 		ActivityWidget widget = new ActivityWidget(context, widgetId);
 
 		String username = widget.getUsername();
-		List<DayActivity> userActivity = getUserActivity.invoke(username);
+
+        List<DailyUserActivity> userActivity = new ArrayList<>(getUserActivity.invoke(username));
 
 		if (userActivity.size() < 365) {
 			return;
 		}
 
-		fillUserActivityToFullWeek(username, userActivity);
+		fillUserActivityToFullWeek(userActivity);
 
 		Intent preferencesActivityIntent = PreferencesActivity.createIntent(context, widgetId);
 
@@ -84,7 +86,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 		widgetManager.updateAppWidget(widgetId, remoteViews);
 	}
 
-	private void fillUserActivityToFullWeek(String username, List<DayActivity> userActivity) {
+	private void fillUserActivityToFullWeek(List<DailyUserActivity> userActivity) {
 
 		Calendar lastDay = Calendar.getInstance();
 		lastDay = DateUtils.truncate(lastDay, Calendar.DAY_OF_MONTH);
@@ -96,7 +98,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 			lastDay.add(Calendar.DAY_OF_WEEK, 1);
 		}
 
-		DayActivity lastSavedUserActivity = userActivity.get(userActivity.size() - 1);
+		DailyUserActivity lastSavedUserActivity = userActivity.get(userActivity.size() - 1);
 
 		Calendar currentDay = Calendar.getInstance();
 		currentDay.setTime(lastSavedUserActivity.getDate());
@@ -104,13 +106,13 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 
 		while (currentDay.before(lastDay)) {
 			L.trace("Add fictive day: {}", currentDay.getTime().toString());
-			userActivity.add(new DayActivity(username, currentDay.getTime(), 0));
+			userActivity.add(new DailyUserActivity(currentDay.getTime(), 0));
 			currentDay.add(Calendar.DAY_OF_MONTH, 1);
 		}
 
 	}
 
-	private void setCellsColor(RemoteViews remoteViews, ActivityWidget widget, List<DayActivity> userActivity) {
+	private void setCellsColor(RemoteViews remoteViews, ActivityWidget widget, List<DailyUserActivity> userActivity) {
 		List<Integer> cellIds = widget.getCellViewIdsDesc();
 
 		ActivityColor minColor = ActivityColor.Companion.fromIntValue(Color.parseColor("#30FFFFFF"));
@@ -125,7 +127,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 		while (idIndex >= 0 && activityIndex >= 0) {
 
 			Integer id = cellIds.get(idIndex);
-			DayActivity activity = userActivity.get(activityIndex);
+			DailyUserActivity activity = userActivity.get(activityIndex);
 
 			int color = ActivityColor.Companion.calculateColor(minColor, maxColor, maxActivity, activity.getCount());
 			remoteViews.setInt(id, "setBackgroundColor", color);
@@ -147,9 +149,9 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 		}
 	}
 
-	public int findMaxActivity(List<DayActivity> userActivity) {
+	public int findMaxActivity(List<DailyUserActivity> userActivity) {
 		int maxActivity = 0;
-		for (DayActivity activity : userActivity) {
+		for (DailyUserActivity activity : userActivity) {
 			maxActivity = Math.max(maxActivity, activity.getCount());
 		}
 		return maxActivity;
