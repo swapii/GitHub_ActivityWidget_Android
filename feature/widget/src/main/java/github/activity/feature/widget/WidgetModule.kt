@@ -1,7 +1,8 @@
-package github.activity.ui.widget
+package github.activity.feature.widget
 
 import dagger.Module
 import dagger.Provides
+import github.activity.feature.widget.interactor.GetUserActivity
 import javax.inject.Provider
 
 @Module

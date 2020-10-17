@@ -10,9 +10,8 @@ import dagger.Provides
 import github.activity.dao.DaoMaster
 import github.activity.dao.DaoMaster.DevOpenHelper
 import github.activity.dao.DaoSession
+import github.activity.feature.widget.WidgetModule
 import github.activity.feature.work.WorkerFactory
-import github.activity.ui.widget.ActivityWidgetProvider
-import github.activity.ui.widget.WidgetModule
 import javax.inject.Provider
 
 @Component(
@@ -24,21 +23,22 @@ import javax.inject.Provider
 interface ApplicationComponent {
 
     fun inject(x: App)
-    fun inject(x: ActivityWidgetProvider)
 
     @Module
-    class ApplicationModule(val context: Context) {
+    class ApplicationModule(
+        private val context: Context,
+    ) {
 
         @Provides
         fun provideWidgetModule(
-            getUserActivity: Provider<github.activity.ui.widget.GetUserActivity>,
+            getUserActivity: Provider<github.activity.feature.widget.interactor.GetUserActivity>,
         ): WidgetModule =
             WidgetModule(getUserActivity)
 
         @Provides
         fun provideGetUserActivity(
             impl: GetUserActivityFromLocalSource,
-        ): github.activity.ui.widget.GetUserActivity =
+        ): github.activity.feature.widget.interactor.GetUserActivity =
             impl
 
         @Provides

@@ -3,8 +3,8 @@ package github.activity
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
-import github.activity.ui.widget.ActivityWidgetProvider
-import github.activity.ui.widget.WidgetOptions
+import github.activity.feature.widget.provider.ActivityWidgetProvider
+import github.activity.feature.widget.provider.WidgetOptions
 
 class GetAllGitHubUsersUsedInWidgets(
     private val context: Context,

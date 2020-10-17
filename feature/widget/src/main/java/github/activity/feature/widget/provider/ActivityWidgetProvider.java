@@ -1,4 +1,4 @@
-package github.activity.ui.widget;
+package github.activity.feature.widget.provider;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -20,10 +20,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import github.activity.R;
 import github.activity.feature.userActivity.domain.DailyUserActivity;
-import github.activity.ui.ActivityColor;
-import github.activity.ui.PreferencesActivity;
+import github.activity.feature.widget.interactor.GetUserActivity;
+import github.activity.feature.widget.R;
+import github.activity.feature.widget.WidgetComponent;
+import github.activity.feature.widget.presentation.preferences.PreferencesActivity;
 
 public class ActivityWidgetProvider extends AppWidgetProvider {
 

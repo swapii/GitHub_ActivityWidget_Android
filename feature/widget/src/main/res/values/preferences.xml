@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Dialog_Activity" parent="Theme.AppCompat.Light.DialogWhenLarge">
+        <item name="colorPrimary">@color/common_primary</item>
+        <item name="colorPrimaryDark">@color/common_primary_dark</item>
+        <item name="colorAccent">@color/common_accent</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <string name="preferences_title">GitHub Activity Widget</string>
+    <string name="preferences_subtitle">Preferences</string>
+
+</resources>

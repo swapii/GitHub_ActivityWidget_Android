@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import github.activity.feature.widget.DaggerWidgetComponent;
+import github.activity.feature.widget.WidgetComponent;
+import github.activity.feature.widget.WidgetModule;
 import github.activity.feature.work.WorkerFactory;
-import github.activity.ui.widget.DaggerWidgetComponent;
-import github.activity.ui.widget.WidgetComponent;
-import github.activity.ui.widget.WidgetModule;
 import okhttp3.OkHttpClient;
 
 public class App extends Application implements Configuration.Provider, WidgetComponent.Provider {

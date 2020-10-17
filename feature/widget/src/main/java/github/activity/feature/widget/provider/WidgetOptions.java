@@ -1,4 +1,4 @@
-package github.activity.ui.widget;
+package github.activity.feature.widget.provider;
 
 import android.os.Bundle;
 

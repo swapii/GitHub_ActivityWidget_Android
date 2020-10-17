@@ -2,23 +2,4 @@
 
 	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
-	<style name="Dialog_Activity" parent="Theme.AppCompat.Light.DialogWhenLarge">
-		<item name="colorPrimary">@color/primary</item>
-		<item name="colorPrimaryDark">@color/primary_dark</item>
-		<item name="colorAccent">@color/accent</item>
-		<item name="windowNoTitle">true</item>
-	</style>
-
-	<style name="Widget_Cell">
-		<item name="android:layout_width">@dimen/widget_grid_cell_size</item>
-		<item name="android:layout_height">@dimen/widget_grid_cell_size</item>
-		<item name="android:layout_margin">@dimen/widget_grid_cell_margin</item>
-	</style>
-
-	<style name="Widget_Week">
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_gravity">center</item>
-	</style>
-
 </resources>

@@ -19,15 +19,6 @@
             android:exported="false"
             tools:node="remove" />
 
-		<receiver android:name=".ui.widget.ActivityWidgetProvider">
-			<intent-filter>
-				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-			</intent-filter>
-			<meta-data
-				android:name="android.appwidget.provider"
-				android:resource="@xml/widget_info" />
-		</receiver>
-
 		<receiver
 			android:name=".receivers.BootCompletedReceiver"
 			android:enabled="false">
@@ -44,11 +35,6 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-
-		<activity
-			android:name=".ui.PreferencesActivity"
-			android:theme="@style/Dialog_Activity"
-			android:label="@string/preferences_title"/>
 
 	</application>
 

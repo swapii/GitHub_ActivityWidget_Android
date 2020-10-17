@@ -1,4 +1,4 @@
-package github.activity.ui.widget
+package github.activity.feature.widget.interactor
 
 import github.activity.feature.userActivity.domain.DailyUserActivity
 

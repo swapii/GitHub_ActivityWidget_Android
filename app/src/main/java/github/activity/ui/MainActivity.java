@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import github.activity.R;
 import github.activity.UpdateAllUsersDayActivitiesWorker;
-import github.activity.ui.widget.ActivityWidgetProvider;
+import github.activity.feature.widget.provider.ActivityWidgetProvider;
 
 public class MainActivity extends AppCompatActivity {
 

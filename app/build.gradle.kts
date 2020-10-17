@@ -57,7 +57,6 @@ kapt {
 dependencies {
 
     implementation(project(":feature-widget"))
-    implementation(project(":feature-userActivity"))
     implementation(project(":feature-dao"))
     implementation(project(":feature-github"))
 
@@ -70,7 +69,5 @@ dependencies {
     implementation(Dependencies.AndroidX.Work.runtimeKtx)
 
     implementation("com.noveogroup.android:android-logger:1.3.5")
-
-    implementation("org.apache.commons:commons-lang3:3.7")
 
 }

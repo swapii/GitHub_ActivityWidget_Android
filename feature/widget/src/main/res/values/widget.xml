@@ -1,0 +1,19 @@
+<resources>
+
+	<style name="Widget_Cell">
+		<item name="android:layout_width">@dimen/widget_grid_cell_size</item>
+		<item name="android:layout_height">@dimen/widget_grid_cell_size</item>
+		<item name="android:layout_margin">@dimen/widget_grid_cell_margin</item>
+	</style>
+
+	<style name="Widget_Week">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_gravity">center</item>
+	</style>
+
+	<dimen name="widget_grid_cell_size">9dp</dimen>
+
+	<dimen name="widget_grid_cell_margin">1dp</dimen>
+
+</resources>

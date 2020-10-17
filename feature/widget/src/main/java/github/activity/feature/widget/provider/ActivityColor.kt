@@ -1,4 +1,4 @@
-package github.activity.ui
+package github.activity.feature.widget.provider
 
 import android.graphics.Color
 
@@ -13,7 +13,7 @@ data class ActivityColor(
 
 		fun fromIntValue(color: Int): ActivityColor {
 			val hsv = FloatArray(3)
-			Color.colorToHSV(color, hsv)
+            Color.colorToHSV(color, hsv)
 			val alpha = Color.alpha(color)
 			val h = hsv[0]
 			val s = hsv[1]
@@ -22,10 +22,10 @@ data class ActivityColor(
 		}
 
 		fun calculateColor(
-			minColor: ActivityColor,
-			maxColor: ActivityColor,
-			maxActivity: Int,
-			currentActivity: Int
+            minColor: ActivityColor,
+            maxColor: ActivityColor,
+            maxActivity: Int,
+            currentActivity: Int
 		): Int {
 
             val coeff = currentActivity.toFloat() / maxActivity
@@ -37,11 +37,11 @@ data class ActivityColor(
 
             var color = Color.HSVToColor(floatArrayOf(h, s, v))
             color = Color.argb(
-				a,
-				Color.red(color),
-				Color.green(color),
-				Color.blue(color)
-			)
+                a,
+                Color.red(color),
+                Color.green(color),
+                Color.blue(color)
+            )
             return color
         }
 
