@@ -26,7 +26,7 @@ dependencies {
 
     implementation(project(":feature-common"))
     implementation(Dependencies.AndroidX.appCompat)
-    implementation("org.apache.commons:commons-lang3:3.7")
+    implementation(Dependencies.ApacheCommons.lang3)
     implementation(Dependencies.Slf4j.api)
 
 }

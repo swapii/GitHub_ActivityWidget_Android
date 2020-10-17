@@ -26,4 +26,8 @@ object Dependencies {
 
     }
 
+    object ApacheCommons {
+        const val lang3 = "org.apache.commons:commons-lang3:3.7"
+    }
+
 }
