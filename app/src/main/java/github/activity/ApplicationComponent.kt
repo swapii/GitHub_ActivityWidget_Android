@@ -12,6 +12,7 @@ import github.activity.dao.DaoMaster.DevOpenHelper
 import github.activity.dao.DaoSession
 import github.activity.feature.work.WorkerFactory
 import github.activity.ui.widget.ActivityWidgetProvider
+import github.activity.ui.widget.WidgetModule
 import javax.inject.Provider
 
 @Component(
@@ -27,6 +28,18 @@ interface ApplicationComponent {
 
     @Module
     class ApplicationModule(val context: Context) {
+
+        @Provides
+        fun provideWidgetModule(
+            getUserActivity: Provider<github.activity.ui.widget.GetUserActivity>,
+        ): WidgetModule =
+            WidgetModule(getUserActivity)
+
+        @Provides
+        fun provideGetUserActivity(
+            impl: GetUserActivityFromLocalSource,
+        ): github.activity.ui.widget.GetUserActivity =
+            impl
 
         @Provides
         fun context(): Context = context.applicationContext

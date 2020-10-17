@@ -19,8 +19,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import github.activity.App;
-import github.activity.GetUserActivityFromLocalSource;
 import github.activity.R;
 import github.activity.dao.DayActivity;
 import github.activity.ui.ActivityColor;
@@ -31,7 +29,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 	private static final Logger L = LoggerFactory.getLogger(ActivityWidgetProvider.class);
 
 	@Inject
-    GetUserActivityFromLocalSource getUserActivityFromLocalSource;
+    GetUserActivity getUserActivity;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager widgetManager, int[] widgetIds) {
@@ -43,11 +41,11 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 	}
 
 	private void inject(Context context) {
-	    if (getUserActivityFromLocalSource != null) {
+	    if (getUserActivity != null) {
 	        // Already injected
 	        return;
         }
-		((App) context.getApplicationContext()).getComponent().inject(this);
+		((WidgetComponent.Provider) context.getApplicationContext()).getWidgetComponent().inject(this);
 	}
 
 	@Override
@@ -64,7 +62,7 @@ public class ActivityWidgetProvider extends AppWidgetProvider {
 		ActivityWidget widget = new ActivityWidget(context, widgetId);
 
 		String username = widget.getUsername();
-		List<DayActivity> userActivity = getUserActivityFromLocalSource.invoke(username);
+		List<DayActivity> userActivity = getUserActivity.invoke(username);
 
 		if (userActivity.size() < 365) {
 			return;

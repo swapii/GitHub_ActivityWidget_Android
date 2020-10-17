@@ -7,6 +7,7 @@ import androidx.work.Configuration;
 
 import com.github.GitHubModule;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,28 +15,38 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import github.activity.feature.work.WorkerFactory;
+import github.activity.ui.widget.DaggerWidgetComponent;
+import github.activity.ui.widget.WidgetComponent;
+import github.activity.ui.widget.WidgetModule;
 import okhttp3.OkHttpClient;
 
-public class App extends Application implements Configuration.Provider {
+public class App extends Application implements Configuration.Provider, WidgetComponent.Provider {
 
     private static final Logger L = LoggerFactory.getLogger(App.class);
 
-    private ApplicationComponent component;
-
     @Inject
     protected Provider<WorkerFactory> workerFactoryProvider;
+
+    @Inject
+    protected WidgetModule widgetModule;
+
+    private WidgetComponent widgetComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
         L.trace("App create");
 
-        component = DaggerApplicationComponent.builder()
+        ApplicationComponent appComponent = DaggerApplicationComponent.builder()
             .applicationModule(new ApplicationComponent.ApplicationModule(this))
             .gitHubModule(new GitHubModule(new OkHttpClient()))
             .build();
 
-        component.inject(this);
+        appComponent.inject(this);
+
+        widgetComponent = DaggerWidgetComponent.builder()
+            .widgetModule(widgetModule)
+            .build();
 
     }
 
@@ -47,8 +58,10 @@ public class App extends Application implements Configuration.Provider {
             .build();
     }
 
-    public ApplicationComponent getComponent() {
-        return component;
+    @NotNull
+    @Override
+    public WidgetComponent getWidgetComponent() {
+        return widgetComponent;
     }
 
 }
