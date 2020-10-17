@@ -26,6 +26,7 @@ public class UpdateService extends Service {
 	private static final Logger L = LoggerFactory.getLogger(UpdateService.class);
 
 	@Inject Storage storage;
+	@Inject GetAllGitHubUsersUsedInWidgets getAllGitHubUsersUsedInWidgets;
 
 	private boolean isStarted;
 
@@ -58,17 +59,7 @@ public class UpdateService extends Service {
 		L.trace("Update data");
 		try {
 
-			AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
-
-			Set<String> usernameSet = new HashSet<>();
-
-			ComponentName componentName = new ComponentName(this, ActivityWidgetProvider.class);
-			for (int widgetId : widgetManager.getAppWidgetIds(componentName)) {
-                WidgetOptions options = new WidgetOptions(widgetManager.getAppWidgetOptions(widgetId));
-                usernameSet.add(options.getUsername());
-            }
-
-			for (String username : usernameSet) {
+			for (String username : getAllGitHubUsersUsedInWidgets.invoke()) {
                 try {
                     GitHubClient client = new GitHubClient();
                     List<OneDayActivityFromServer> userActivity = client.getUserActivity(username)
