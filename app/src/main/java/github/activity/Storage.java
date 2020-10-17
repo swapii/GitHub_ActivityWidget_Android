@@ -1,8 +1,5 @@
 package github.activity;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-
 import com.github.OneDayActivityFromServer;
 
 import org.slf4j.Logger;
@@ -10,10 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import javax.inject.Provider;
 
-import de.greenrobot.dao.query.QueryBuilder;
-import github.activity.dao.DaoMaster;
 import github.activity.dao.DaoSession;
 import github.activity.dao.DayActivity;
 import github.activity.dao.DayActivityDao;
@@ -22,15 +17,11 @@ public class Storage {
 
 	private static final Logger L = LoggerFactory.getLogger(Storage.class);
 
-	private DaoSession session;
+	private final Provider<DaoSession> sessionProvider;
 
-	@Inject
-	protected Storage(Context context) {
-		DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "main", null);
-		SQLiteDatabase db = helper.getWritableDatabase();
-		DaoMaster master = new DaoMaster(db);
-		session = master.newSession();
-	}
+	protected Storage(Provider<DaoSession> sessionProvider) {
+        this.sessionProvider = sessionProvider;
+    }
 
 	public void updateUserActivity(final String username, final List<OneDayActivityFromServer> userActivity) {
 
@@ -41,36 +32,29 @@ public class Storage {
 			}
 		}
 
+        DaoSession session = sessionProvider.get();
+
 		//TODO Pass into method DayActivity for DB
-		session.runInTx(new Runnable() {
-			@Override
-			public void run() {
+		session.runInTx(() -> {
 
-				DayActivityDao dao = session.getDayActivityDao();
-				L.trace("Activities count before update: " + dao.count());
+            DayActivityDao dao = session.getDayActivityDao();
+            L.trace("Activities count before update: " + dao.count());
 
-				getBuilderForActivityByUser(username)
-						.buildDelete()
-						.executeDeleteWithoutDetachingEntities();
-				L.trace("Activities count after clean: " + dao.count());
+            DayActivityDao_getBuilderForActivityByUserKt.getBuilderForActivityByUser(
+                session.getDayActivityDao(),
+                username
+            )
+                    .buildDelete()
+                    .executeDeleteWithoutDetachingEntities();
+            L.trace("Activities count after clean: " + dao.count());
 
-				for (OneDayActivityFromServer serverActivity : userActivity) {
-					DayActivity dbActivity = new DayActivity(username, serverActivity.getDate(), serverActivity.getActivityCount());
-					dao.insert(dbActivity);
-				}
-				L.trace("Activities count after insert new: " + dao.count());
+            for (OneDayActivityFromServer serverActivity : userActivity) {
+                DayActivity dbActivity = new DayActivity(username, serverActivity.getDate(), serverActivity.getActivityCount());
+                dao.insert(dbActivity);
+            }
+            L.trace("Activities count after insert new: " + dao.count());
 
-			}
-		});
-	}
-
-	public List<DayActivity> getUserActivity(String username) {
-		return getBuilderForActivityByUser(username).build().list();
-	}
-
-	private QueryBuilder<DayActivity> getBuilderForActivityByUser(String username) {
-		return session.getDayActivityDao().queryBuilder()
-				.where(DayActivityDao.Properties.User.eq(username));
+        });
 	}
 
 }

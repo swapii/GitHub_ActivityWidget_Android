@@ -7,6 +7,9 @@ import com.github.GitHubModule
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import github.activity.dao.DaoMaster
+import github.activity.dao.DaoMaster.DevOpenHelper
+import github.activity.dao.DaoSession
 import github.activity.feature.work.WorkerFactory
 import github.activity.ui.widget.ActivityWidgetProvider
 import javax.inject.Provider
@@ -53,6 +56,33 @@ interface ApplicationComponent {
                 { getUserActivity.get() },
                 { storage.get() },
             )
+
+        @Provides
+        fun provideDaoMaster(): DaoMaster {
+            val helper = DevOpenHelper(context, "main", null)
+            val db = helper.writableDatabase
+            return DaoMaster(db)
+        }
+
+        @Provides
+        fun provideDaoSession(
+            daoMaster: DaoMaster,
+        ): DaoSession =
+            daoMaster.newSession()
+
+        @Provides
+        fun provideGetUserActivityFromLocalSource(
+            daoSession: DaoSession,
+        ): GetUserActivityFromLocalSource =
+            GetUserActivityFromLocalSource(
+                daoSession,
+            )
+
+        @Provides
+        fun provideStorage(
+            daoSessionProvider: Provider<DaoSession>,
+        ): Storage =
+            Storage(daoSessionProvider)
 
     }
 
