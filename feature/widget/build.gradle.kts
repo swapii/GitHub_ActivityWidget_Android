@@ -4,7 +4,7 @@ plugins {
 
 android {
 
-	compileSdkVersion(Versions.Android.compileSdkVersion)
+    compileSdkVersion(Versions.Android.compileSdkVersion)
 
     defaultConfig {
 
@@ -13,8 +13,4 @@ android {
 
     }
 
-}
-
-dependencies {
-	api("de.greenrobot:greendao:${Versions.greenDao}")
 }

@@ -56,6 +56,7 @@ kapt {
 
 dependencies {
 
+    implementation(project(":feature-widget"))
     implementation(project(":feature-dao"))
     implementation(project(":feature-github"))
 
