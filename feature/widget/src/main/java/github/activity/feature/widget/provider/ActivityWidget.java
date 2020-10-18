@@ -1,4 +1,4 @@
-package github.activity.ui.widget;
+package github.activity.feature.widget.provider;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import github.activity.R;
+import github.activity.feature.widget.R;
 
 /**
  * Wrapper for widget with useful methods.

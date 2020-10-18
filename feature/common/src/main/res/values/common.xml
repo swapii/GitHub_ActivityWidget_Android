@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="github_toolbar_back">#f5f5f5</color>
+    <color name="github_toolbar_border">#e4e5e4</color>
+    <color name="github_link">#4178c0</color>
+    <color name="github_header_text">#323232</color>
+    <color name="github_text">#666666</color>
+
+    <color name="common_primary">@color/github_toolbar_back</color>
+    <color name="common_primary_dark">@color/github_toolbar_border</color>
+    <color name="common_accent">@color/github_link</color>
+
+</resources>

@@ -1,52 +1,67 @@
 package github.activity;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Intent;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.work.Configuration;
 
+import com.github.GitHubModule;
+
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class App extends Application {
+import javax.inject.Inject;
+import javax.inject.Provider;
 
-	private static final Logger L = LoggerFactory.getLogger(App.class);
+import github.activity.feature.widget.DaggerWidgetComponent;
+import github.activity.feature.widget.WidgetComponent;
+import github.activity.feature.widget.WidgetModule;
+import github.activity.feature.work.WorkerFactory;
+import okhttp3.OkHttpClient;
 
-	public static final int DATA_UPDATE_INTERVAL = 1000 * 60 * 60;
+public class App extends Application implements Configuration.Provider, WidgetComponent.Provider {
 
-	private ApplicationComponent component;
+    private static final Logger L = LoggerFactory.getLogger(App.class);
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		L.trace("App create");
-		tuneAlarm();
+    @Inject
+    protected Provider<WorkerFactory> workerFactoryProvider;
 
-		component = DaggerApplicationComponent.builder()
-				.applicationModule(new ApplicationComponent.ApplicationModule(this))
-				.build();
+    @Inject
+    protected WidgetModule widgetModule;
 
-	}
+    private WidgetComponent widgetComponent;
 
-	public ApplicationComponent getComponent() {
-		return component;
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        L.trace("App create");
 
-	private void tuneAlarm() {
+        ApplicationComponent appComponent = DaggerApplicationComponent.builder()
+            .applicationModule(new ApplicationComponent.ApplicationModule(this))
+            .gitHubModule(new GitHubModule(new OkHttpClient()))
+            .build();
 
-		Intent serviceIntent = new Intent(this, UpdateService.class);
-		PendingIntent alarmIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
+        appComponent.inject(this);
 
-		ContextCompat.getSystemService(this, AlarmManager.class)
-				.setInexactRepeating(
-						AlarmManager.ELAPSED_REALTIME,
-						DATA_UPDATE_INTERVAL,
-						DATA_UPDATE_INTERVAL,
-						alarmIntent
-				);
+        widgetComponent = DaggerWidgetComponent.builder()
+            .widgetModule(widgetModule)
+            .build();
 
-	}
+    }
+
+    @NonNull
+    @Override
+    public Configuration getWorkManagerConfiguration() {
+        return new Configuration.Builder()
+            .setWorkerFactory(workerFactoryProvider.get())
+            .build();
+    }
+
+    @NotNull
+    @Override
+    public WidgetComponent getWidgetComponent() {
+        return widgetComponent;
+    }
 
 }

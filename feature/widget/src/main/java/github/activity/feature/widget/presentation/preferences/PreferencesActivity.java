@@ -1,4 +1,4 @@
-package github.activity.ui;
+package github.activity.feature.widget.presentation.preferences;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import github.activity.R;
-import github.activity.ui.widget.ActivityWidget;
+import github.activity.feature.widget.R;
+import github.activity.feature.widget.provider.ActivityWidget;
 
 public class PreferencesActivity extends AppCompatActivity {
 

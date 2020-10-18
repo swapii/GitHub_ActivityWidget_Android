@@ -2,18 +2,19 @@ package github.activity.ui;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import github.activity.R;
-import github.activity.UpdateService;
-import github.activity.ui.widget.ActivityWidgetProvider;
+import github.activity.UpdateAllUsersDayActivitiesWorker;
+import github.activity.feature.widget.provider.ActivityWidgetProvider;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
 			L.info("Widget ID: {}", widgetId);
 		}
 
-		Intent intent = new Intent(this, UpdateService.class);
-		startService(intent);
+        WorkManager.getInstance(this)
+            .enqueue(OneTimeWorkRequest.from(UpdateAllUsersDayActivitiesWorker.class));
 
 	}
 

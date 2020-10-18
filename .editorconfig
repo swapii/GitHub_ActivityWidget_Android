@@ -1,20 +1,13 @@
-# EditorConfig is awesome: http://EditorConfig.org
-
 root = true
 
-[*]
+[*.{gradle,kt,kts,java,xml}]
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
 
-[*.gradle]
-indent_style = tab
-
-[*.java]
-indent_style = tab
-
-[*.xml]
-indent_style = tab
+[*.{gradle,kt,kts,java}]
+indent_style = space
+indent_size = 4
 
 [/gradlew]
 end_of_line = lf
